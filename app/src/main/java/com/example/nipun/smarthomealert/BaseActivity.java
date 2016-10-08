@@ -1,5 +1,7 @@
 package com.example.nipun.smarthomealert;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,11 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.R.attr.duration;
 import static android.R.attr.name;
 
 public class BaseActivity extends AppCompatActivity
@@ -29,7 +34,7 @@ public class BaseActivity extends AppCompatActivity
     TextView displayName;
     TextView displayEmailId;
     NavigationView navigationView;
-
+    Spinner signOutSpinner;
 
 
     @Override
@@ -108,11 +113,29 @@ public class BaseActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            signOut();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void signOut() {
+        Log.d("base act sign out check" , "SIGNED OUT 1");
+        FirebaseAuth.getInstance().signOut();
+        Intent startLogin = new Intent(BaseActivity.this , Login.class);
+        Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context, "Signing Out", Toast.LENGTH_SHORT);
+        toast.show();
+        BaseActivity.this.startActivity(startLogin);
+        Toast tost2 = Toast.makeText(context,"Signed Out Successfully" , Toast.LENGTH_SHORT );
+        tost2.show();
+
+
+    }
+
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

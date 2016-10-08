@@ -60,9 +60,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getEmail());
-
+                    //Start Main App
                     Intent startMain = new Intent(Login.this , BaseActivity.class);
-
                     Login.this.startActivity(startMain);
                 } else {
                     // User is signed out
