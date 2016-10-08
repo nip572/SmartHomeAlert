@@ -13,9 +13,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import static android.R.attr.name;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    TextView displayName;
+    TextView displayEmailId;
+    NavigationView navigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +54,30 @@ public class BaseActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+
+        //get instance and user
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        Log.d("Base Activity" , user.getDisplayName());
+
+        //nav header name and email id
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        displayName = (TextView)header.findViewById(R.id.nav_name);
+        displayEmailId = (TextView)header.findViewById(R.id.nav_email_id);
+        displayName.setText(user.getDisplayName());
+        displayEmailId.setText(user.getEmail());
+
+
+
+
+
+
+
+
 
 
     }
