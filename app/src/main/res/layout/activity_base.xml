@@ -28,4 +28,10 @@
         app:headerLayout="@layout/nav_header_base"
         app:menu="@menu/activity_base_drawer" />
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
+
 </android.support.v4.widget.DrawerLayout>
