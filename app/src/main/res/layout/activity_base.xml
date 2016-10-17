@@ -13,12 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sign_out_spinner"
-        android:visibility="gone"/>
-
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -28,10 +22,5 @@
         app:headerLayout="@layout/nav_header_base"
         app:menu="@menu/activity_base_drawer" />
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
-
 </android.support.v4.widget.DrawerLayout>
+

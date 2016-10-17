@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class BaseActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private Button test;
     TextView displayName;
     TextView displayEmailId;
     NavigationView navigationView;
@@ -47,6 +50,7 @@ public class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // Button button = (Button) findViewById(R.id.button2);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -80,38 +84,6 @@ public class BaseActivity extends AppCompatActivity
         displayEmailId = (TextView)header.findViewById(R.id.nav_email_id);
         displayName.setText(user.getDisplayName());
         displayEmailId.setText(user.getEmail());
-
-        //make sample queries to firebase
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-
-                Log.d( "Value is: " , value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w( "Failed to read value.", "");
-            }
-        });
-
-
-
-
-
-
-
-
-
-
     }
 
     @Override
@@ -146,6 +118,39 @@ public class BaseActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+            Log.d("Cmaera", "onNavigationItemSelected: ");
+        } else if (id == R.id.nav_gallery) {
+            Log.d("gallery", "onNavigationItemSelected: ");
+
+            Log.d("Base Act", "onNavigationItemSelected: smart recipies ");
+            RecipeListFragment recipeListFragment = new RecipeListFragment();
+            FragmentManager fragmentManager =  getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , recipeListFragment , recipeListFragment.getTag()).commit();
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+
 
     private void signOut() {
         Log.d("base act sign out check" , "SIGNED OUT 1");
@@ -164,28 +169,5 @@ public class BaseActivity extends AppCompatActivity
 
 
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }
