@@ -1,9 +1,14 @@
 package com.example.nipun.smarthomealert;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class RecipeResponse extends Throwable {
+public class RecipeResponse extends Throwable implements Serializable{
 
     private Integer id;
     private String title;

@@ -1,0 +1,139 @@
+package com.example.nipun.smarthomealert;
+
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.Serializable;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class EnterIngredientsFragment extends Fragment{
+
+
+    public EnterIngredientsFragment() {
+        // Required empty public constructor
+    }
+    private RecipeCalls recipeCalls;
+    private String ingridientsString;
+    private EditText addIngridient;
+    private Button addIngredientButton;
+    private Button searchButton;
+    String str1;
+    String str2;
+    String str3;
+    String str4;
+    String str5;
+    public static final String BASE_URL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        // ADD INGRIDIENT TO LIST
+        addIngredientButton = (Button) rootView.findViewById(R.id.submit_for_ingridients);
+        addIngridient = (EditText) rootView.findViewById(R.id.editText_add_ingridient);
+        addIngredientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), addIngridient.getText() + " added" , Toast.LENGTH_LONG);
+
+                if(ingridientsString == null){
+                    ingridientsString = addIngridient.getText() + "%2C";
+                    addIngridient.getText().clear();
+                }
+                else{
+                    ingridientsString = ingridientsString + addIngridient.getText().toString() +"%2C";
+                    addIngridient.getText().clear();
+                }
+
+
+
+
+            }
+        });
+
+        //POST
+
+        searchButton = (Button) rootView.findViewById(R.id.button_search);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                recipeCalls = retrofit.create(RecipeCalls.class);
+                Call<List<RecipeResponse>> recipeResponse = recipeCalls.getRecipe(ingridientsString);
+                recipeResponse.enqueue(new Callback<List<RecipeResponse>>() {
+                    @Override
+                    public void onResponse(Call<List<RecipeResponse>> call, Response<List<RecipeResponse>> response) {
+                        int statusCode = response.code();
+                        List<RecipeResponse> rr = response.body();
+                        Log.d("inside On response " , String.valueOf(statusCode));
+                        Log.d("onResponse: " , (rr.get(0).getTitle()));
+
+                        str1 = rr.get(1).getTitle();
+                        str2 = rr.get(2).getTitle();
+                        str3 = rr.get(3).getTitle();
+                        str4 = rr.get(4).getTitle();
+
+                        Intent recipeListIntent = new Intent(getActivity() , RecipeListActivity.class);
+                        recipeListIntent.putExtra("RecipeList" , (Serializable) rr);
+                        recipeListIntent.putExtra("str1" , str1);
+
+                        EnterIngredientsFragment.this.startActivity(recipeListIntent);
+                        ingridientsString =null;
+
+                    }
+
+
+
+                    @Override
+                    public void onFailure(Call<List<RecipeResponse>> call, Throwable t) {
+
+                    }
+                }); // END CALLBACK
+
+
+            }
+        });
+        return rootView;
+    }
+
+}

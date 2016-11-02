@@ -17,20 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import static android.R.attr.duration;
-import static android.R.attr.name;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,7 +33,7 @@ public class BaseActivity extends AppCompatActivity
     TextView displayName;
     TextView displayEmailId;
     NavigationView navigationView;
-    Spinner signOutSpinner;
+
 
 
     @Override
@@ -67,6 +58,10 @@ public class BaseActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        FridgeFragment fm = new FridgeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , fm,fm.getTag()).commit();
 
 
 
@@ -111,8 +106,16 @@ public class BaseActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sign_out) {
             signOut();
+            return true;
+        }
+        if(id == R.id.action_settings)
+        {
+            Log.d("Settings", "onOptionsItemSelected: ");
+            // Start Activity
+            Intent startSeetings = new Intent(BaseActivity.this ,SettingsActivity.class);
+            BaseActivity.this.startActivity(startSeetings);
             return true;
         }
 
@@ -127,21 +130,17 @@ public class BaseActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
             Log.d("Cmaera", "onNavigationItemSelected: ");
+            FridgeFragment fm = new FridgeFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , fm,fm.getTag()).commit();
+
         } else if (id == R.id.nav_gallery) {
             Log.d("gallery", "onNavigationItemSelected: ");
 
             Log.d("Base Act", "onNavigationItemSelected: smart recipies ");
-            RecipeListFragment recipeListFragment = new RecipeListFragment();
+            EnterIngredientsFragment enterIngredientsFragment = new EnterIngredientsFragment();
             FragmentManager fragmentManager =  getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , recipeListFragment , recipeListFragment.getTag()).commit();
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , enterIngredientsFragment, enterIngredientsFragment.getTag()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
