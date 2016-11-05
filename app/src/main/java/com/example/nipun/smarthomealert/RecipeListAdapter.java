@@ -1,6 +1,7 @@
 package com.example.nipun.smarthomealert;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class RecipeListAdapter extends BaseAdapter {
         View v = View.inflate(mContext, R.layout.recipe_item, null);
         TextView title = (TextView) v.findViewById(R.id.recipe_title);
         ImageView recpiePhoto = (ImageView) v.findViewById(R.id.imageView_recipe_photo);
+        recpiePhoto.setColorFilter(Color.rgb(175, 175, 175), android.graphics.PorterDuff.Mode.MULTIPLY);
         Log.d(mRecipeList.get(position).getImage(), "getView: imageURL ");
         String imageViewRecipe = mRecipeList.get(position).getImage();
         title.setText(mRecipeList.get(position).getTitle());

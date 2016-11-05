@@ -69,7 +69,7 @@ public class BaseActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        Log.d("Base Activity" , user.getDisplayName());
+        //Log.d("Base Activity" , user.getDisplayName());
 
         //nav header name and email id
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -77,7 +77,8 @@ public class BaseActivity extends AppCompatActivity
         View header=navigationView.getHeaderView(0);
         displayName = (TextView)header.findViewById(R.id.nav_name);
         displayEmailId = (TextView)header.findViewById(R.id.nav_email_id);
-        displayName.setText(user.getDisplayName());
+        if(user.getDisplayName() != null){displayName.setText(user.getDisplayName()); }
+
         displayEmailId.setText(user.getEmail());
     }
 

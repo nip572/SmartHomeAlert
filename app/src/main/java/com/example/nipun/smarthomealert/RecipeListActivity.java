@@ -1,6 +1,9 @@
 package com.example.nipun.smarthomealert;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +15,7 @@ import java.util.List;
 
 import static com.example.nipun.smarthomealert.R.id.textView;
 
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity{
 
     private List<RecipeResponse> mRecipeList ;
     private ListView lvRecipeList;
@@ -21,6 +24,8 @@ public class RecipeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mRecipeList = new ArrayList<>();
 
 

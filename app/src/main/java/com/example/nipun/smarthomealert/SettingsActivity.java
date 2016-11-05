@@ -25,15 +25,14 @@ public class SettingsActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("user");
         //myRef.child("minimumThreshhold").setValue(etMinimumThreshold.getText());
-        //myRef.setValue("Hello, World!");
+        myRef.child("minimumThreshold").setValue("400");
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-
-               // Log.d( "Value is: " ," " +value);
 
 
             }
