@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Recipies" />
 
+        <item
+            android:id="@+id/nav_groceryList"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Grocerly list" />
     </group>
 
 </menu>

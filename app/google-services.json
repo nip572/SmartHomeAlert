@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "928233625507",
-    "firebase_url": "https://smarthomealert-b4670.firebaseio.com",
-    "project_id": "smarthomealert-b4670",
-    "storage_bucket": "smarthomealert-b4670.appspot.com"
+    "project_number": "976403315747",
+    "firebase_url": "https://smarthomealert-60878.firebaseio.com",
+    "project_id": "smarthomealert-60878",
+    "storage_bucket": "smarthomealert-60878.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:928233625507:android:d43d9334aba6083a",
+        "mobilesdk_app_id": "1:976403315747:android:d43d9334aba6083a",
         "android_client_info": {
           "package_name": "com.example.nipun.smarthomealert"
         }
       },
       "oauth_client": [
         {
-          "client_id": "928233625507-c490vvur91fplkm9cgd0c2158vek21uj.apps.googleusercontent.com",
+          "client_id": "976403315747-853meqflpjce2qe49sfvqfertmt0ic82.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.nipun.smarthomealert",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "928233625507-dd5jovaj6iqpu1bc0jpts8c7lth4anao.apps.googleusercontent.com",
+          "client_id": "976403315747-0qpmq7ros9ge2rl48m2tt6r0nn4gvbd3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAhug-WmQ2mhJF4_Gmx48UDuvygBcqkhQc"
+          "current_key": "AIzaSyALHfOzVz5_fJ9wIFWkrCnvUhf9K3KhkMo"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "928233625507-dd5jovaj6iqpu1bc0jpts8c7lth4anao.apps.googleusercontent.com",
+              "client_id": "976403315747-0qpmq7ros9ge2rl48m2tt6r0nn4gvbd3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

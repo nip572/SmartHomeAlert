@@ -37,18 +37,20 @@ public class FridgeFragment extends Fragment {
         View rootView=  inflater.inflate(R.layout.fragment_fridge, container, false);
 
         milkView = (TextView) rootView.findViewById(R.id.milk_left);
+
+        //TO DO FIX GETTING THE VALUES BY CREATING MODELS
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("weightvalue");
+                DatabaseReference myRef = database.getInstance().getReference("Db");
+                 //myRef= myRef.child("User1").child("Open");
         //myRef.setValue("Hello, World!");
                 myRef.addValueEventListener(new ValueEventListener() {
                         @Override
                        public void onDataChange(DataSnapshot dataSnapshot) {
                               // This method is called once with the initial value and again
                                         // whenever data at this location is updated.
-                                                String value = dataSnapshot.getValue(String.class);
-
-                                        Log.d( "Value is: " ," " +value);
-                            milkView.setText(value);
+                                                //String value = dataSnapshot.getValue(String.class);
+                                        //Log.d( "Value is: " ," " +value);
+                            //milkView.setText(value);
 
                             }
 
