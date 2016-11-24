@@ -4,12 +4,13 @@ package com.example.nipun.smarthomealert;
  * Created by Nipun on 11/21/16.
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class ExtendedIngredient {
+public class ExtendedIngredient  extends Throwable implements Serializable {
 
     private Integer id;
     private String aisle;

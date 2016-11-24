@@ -43,11 +43,7 @@ public class EnterIngredientsFragment extends Fragment{
     private EditText addIngridient;
     private Button addIngredientButton;
     private Button searchButton;
-    String str1;
-    String str2;
-    String str3;
-    String str4;
-    String str5;
+
     public static final String BASE_URL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
 
 
@@ -105,18 +101,8 @@ public class EnterIngredientsFragment extends Fragment{
                     public void onResponse(Call<List<RecipeResponse>> call, Response<List<RecipeResponse>> response) {
                         int statusCode = response.code();
                         List<RecipeResponse> rr = response.body();
-                        Log.d("inside On response " , String.valueOf(statusCode));
-                        Log.d("onResponse: " , (rr.get(0).getTitle()));
-
-                        str1 = rr.get(1).getTitle();
-                        str2 = rr.get(2).getTitle();
-                        str3 = rr.get(3).getTitle();
-                        str4 = rr.get(4).getTitle();
-
                         Intent recipeListIntent = new Intent(getActivity() , RecipeListActivity.class);
                         recipeListIntent.putExtra("RecipeList" , (Serializable) rr);
-                        recipeListIntent.putExtra("str1" , str1);
-
                         EnterIngredientsFragment.this.startActivity(recipeListIntent);
                         ingridientsString =null;
 

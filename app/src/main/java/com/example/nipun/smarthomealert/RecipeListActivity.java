@@ -29,12 +29,9 @@ public class RecipeListActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecipeList = new ArrayList<>();
-
-
-
         lvRecipeList = (ListView) findViewById(R.id.recipe_list_view);
         mRecipeList = (ArrayList)getIntent().getSerializableExtra("RecipeList");
-        Log.d("TITLE" , mRecipeList.get(1).getTitle());
+
 
         adapter = new RecipeListAdapter(getApplicationContext(), mRecipeList);
         lvRecipeList.setAdapter(adapter);
@@ -58,15 +55,15 @@ public class RecipeListActivity extends AppCompatActivity{
                         String recipeId = mRecipeList.get(position).getId().toString();
                         String  imageUrl = mRecipeList.get(position).getImage();
                         String  recipeTitle = mRecipeList.get(position).getTitle();
+                        String  likes = mRecipeList.get(position).getLikes().toString();
 
-                        Log.d(recipeId, "onItemClick: imageID ");
-                        Log.d(imageUrl, "onItemClick: url");
-                        Log.d(recipeTitle, "onItemClick: recipeTitle");
 
                         //Send intent
                         startRecipeDetailActivity.putExtra("recipeId" , recipeId);
                         startRecipeDetailActivity.putExtra("imageUrl" , imageUrl);
                         startRecipeDetailActivity.putExtra("recipeTitle" , recipeTitle);
+                        startRecipeDetailActivity.putExtra("likes" , likes);
+
 
                         //Start Details Activity
                         RecipeListActivity.this.startActivity(startRecipeDetailActivity);
