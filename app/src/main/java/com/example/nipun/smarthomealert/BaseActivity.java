@@ -216,7 +216,6 @@ public class BaseActivity extends AppCompatActivity
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     Log.d(intent.getExtras().get("coordinates").toString(), "onReceive: ");
-
                 }
             };
         }

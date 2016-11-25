@@ -40,7 +40,7 @@ public class FridgeFragment extends Fragment {
 
         //TO DO FIX GETTING THE VALUES BY CREATING MODELS
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getInstance().getReference("Db");
+                DatabaseReference myRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
                  //myRef= myRef.child("User1").child("Open");
         //myRef.setValue("Hello, World!");
                 myRef.addValueEventListener(new ValueEventListener() {
@@ -48,9 +48,9 @@ public class FridgeFragment extends Fragment {
                        public void onDataChange(DataSnapshot dataSnapshot) {
                               // This method is called once with the initial value and again
                                         // whenever data at this location is updated.
-                                                //String value = dataSnapshot.getValue(String.class);
+                                                Integer value = dataSnapshot.getValue(Integer.class);
                                         //Log.d( "Value is: " ," " +value);
-                            //milkView.setText(value);
+                            milkView.setText(value.toString());
 
                             }
 
