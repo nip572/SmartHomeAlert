@@ -35,11 +35,9 @@
         android:layout_width="wrap_content"
         android:gravity="right"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:clickable="true"
         android:layout_height="wrap_content"
         android:id="@+id/list_view_ingredients_add"
         android:layout_marginTop="30dp"
         android:layout_weight="1" />
-
-
-
 </LinearLayout>
