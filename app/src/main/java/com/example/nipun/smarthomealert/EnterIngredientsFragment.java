@@ -3,10 +3,7 @@ package com.example.nipun.smarthomealert;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +35,7 @@ public class EnterIngredientsFragment extends Fragment{
     public EnterIngredientsFragment() {
         // Required empty public constructor
     }
-    private RecipeCalls recipeCalls;
+    private RestCalls restCalls;
     private String ingridientsString;
     private EditText addIngridient;
     private Button addIngredientButton;
@@ -94,8 +91,8 @@ public class EnterIngredientsFragment extends Fragment{
             @Override
             public void onClick(View v) {
 
-                recipeCalls = retrofit.create(RecipeCalls.class);
-                Call<List<RecipeResponse>> recipeResponse = recipeCalls.getRecipe(ingridientsString);
+                restCalls = retrofit.create(RestCalls.class);
+                Call<List<RecipeResponse>> recipeResponse = restCalls.getRecipe(ingridientsString);
                 recipeResponse.enqueue(new Callback<List<RecipeResponse>>() {
                     @Override
                     public void onResponse(Call<List<RecipeResponse>> call, Response<List<RecipeResponse>> response) {

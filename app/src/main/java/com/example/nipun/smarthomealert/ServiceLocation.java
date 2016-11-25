@@ -20,12 +20,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.sql.Ref;
-
-import static android.R.attr.value;
-import static com.google.android.gms.common.api.Status.we;
-import static java.awt.font.TextAttribute.WEIGHT;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Nipun on 11/24/16.
@@ -39,7 +41,9 @@ public class ServiceLocation extends Service {
     private Integer minimumThrehold;
     private String longitude;
     private String latitude;
-
+    RestCalls restCalls;
+    private String location = "37.338208,-121.886329";
+    public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
     @Nullable
     @Override
@@ -129,6 +133,41 @@ public class ServiceLocation extends Service {
 
             }
         });
+
+
+        ///TEST TEST TEST TEST TEST TEST
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        restCalls = retrofit.create(RestCalls.class);
+        final Call<PlaceApiModel> placeApiModelResponse = restCalls.getPlaceDetails(location);
+        placeApiModelResponse.enqueue(new Callback<PlaceApiModel>() {
+            @Override
+            public void onResponse(Call<PlaceApiModel> call, Response<PlaceApiModel> response) {
+                int statusCode = response.code();
+                PlaceApiModel details = response.body();
+                String resultName = details.getResults().get(0).getName();
+                Log.d(resultName, "onResponse: NAME OF GROCERY STORE IS");
+
+            }
+            @Override
+            public void onFailure(Call<PlaceApiModel> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+
+
+
     }
 
     @Override

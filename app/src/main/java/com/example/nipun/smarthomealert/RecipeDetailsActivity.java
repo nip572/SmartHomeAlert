@@ -1,24 +1,20 @@
 package com.example.nipun.smarthomealert;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,16 +23,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.R.attr.x;
-import static java.security.AccessController.getContext;
-
 public class RecipeDetailsActivity extends AppCompatActivity {
 
     String recipeId;
     String imageUrl;
     String recipeTitle;
     String likes;
-    RecipeCalls recipeCalls;
+    RestCalls restCalls;
     TextView tvInstructions;
     String steps;
     TextView tvReadyInMin;
@@ -90,8 +83,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        recipeCalls = retrofit.create(RecipeCalls.class);
-        final Call<RecipeDetailsResponse> recipeDetailsResponse = recipeCalls.getRecipeDetails(recipeId);
+        restCalls = retrofit.create(RestCalls.class);
+        final Call<RecipeDetailsResponse> recipeDetailsResponse = restCalls.getRecipeDetails(recipeId);
         recipeDetailsResponse.enqueue(new Callback<RecipeDetailsResponse>() {
             @Override
             public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {

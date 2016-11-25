@@ -15,7 +15,7 @@ import static android.R.attr.id;
  * Created by Nipun on 10/8/16.
  */
 
-public interface RecipeCalls {
+public interface RestCalls {
 
 
     //@GET("findByIngredients?fillIngredients=false&ingredients=apples%2Cflour%2Csugar/")
@@ -28,6 +28,11 @@ public interface RecipeCalls {
     @GET("{recipeId}/information?includeNutrition=true")
     @Headers("X-Mashape-Key:Wx48O1cHuGmshBNjAiZ1Jf6c1va3p1tb1tHjsnS1s6NaXsgtzo")
     Call<RecipeDetailsResponse> getRecipeDetails(@Path("recipeId") String recipeId);
+
+    //MAKE REST CALL TO PLACES API
+    @GET("json?radius=1000&types=grocery_or_supermarket&key=AIzaSyAF8QXex5dgm0UIjBTZLd-e6EgjYUHnuw0")
+    Call<PlaceApiModel> getPlaceDetails(@Query("location") String latLong);
+
 
 
 
