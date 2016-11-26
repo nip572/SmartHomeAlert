@@ -12,9 +12,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,20 +32,27 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.R.attr.radius;
+
 /**
  * Created by Nipun on 11/24/16.
  */
 
-public class ServiceLocation extends Service {
+public class ServiceLocation extends Service  {
 
     private LocationListener listener;
     private LocationManager locationManager;
     private Integer weightValue;
     private Integer minimumThrehold;
-    private String longitude;
-    private String latitude;
-    RestCalls restCalls;
-    private String location = "37.338208,-121.886329";
+    private RestCalls restCalls;
+    private String currentlocation = "37.338208,-121.886329";
+    private Double currentLat = 37.338208;
+    private Double radiusFirebase = 2.0;
+    private Double currentLong = -121.886329;
+    private PlaceApiModel details;
+    private  int notificationId = 0;
+    private Double distanceBetweenLocationAndStore = 5.0;
+
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
     @Nullable
@@ -54,17 +64,16 @@ public class ServiceLocation extends Service {
     @Override
     public void onCreate() {
 
+
+
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Intent i = new Intent("location_update");
-               Double longitudeDouble = location.getLongitude();
-                longitude = longitudeDouble.toString();
-                Double latitudeDouble = location.getLatitude();
-                latitude = latitudeDouble.toString();
                 i.putExtra("coordinates", location.getLongitude() + " " + location.getLatitude());
-
-                //if weight value is less than minimum threshold make a rest call to places api get radius of first in list if less that .5 mile send a notification
+                currentlocation = location.getLatitude() + ","+ location.getLongitude();
+                currentLat = location.getLatitude();
+                currentLong= location.getLongitude();
                 sendBroadcast(i);
             }
 
@@ -92,19 +101,15 @@ public class ServiceLocation extends Service {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
 
 
-        //for notifcation
+        //RADIUS REFEREMCE
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
-        DatabaseReference minimumThreholdRef = database.getInstance().getReference("Db").child("User1").child("minimumThreshold");
-        minimumThreholdRef.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference radiusRef = database.getInstance().getReference("Db").child("User1").child("Radius");
+        radiusRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                minimumThrehold = dataSnapshot.getValue(Integer.class);
-                Log.d(minimumThrehold.toString(), "onDataChange: mMTR");
-            }
+               radiusFirebase = dataSnapshot.getValue(Double.class);
 
+            }
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
@@ -113,18 +118,56 @@ public class ServiceLocation extends Service {
         });
 
 
+
+
+        DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
         weightRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 weightValue = dataSnapshot.getValue(Integer.class);
+                Gson gson = new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                        .create();
+
+                final Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
+
+                restCalls = retrofit.create(RestCalls.class);
+                final Call<PlaceApiModel> placeApiModelResponse = restCalls.getPlaceDetails(currentlocation);
+                placeApiModelResponse.enqueue(new Callback<PlaceApiModel>() {
+
+                    @Override
+                    public void onResponse(Call<PlaceApiModel> call, Response<PlaceApiModel> response) {
+                        int statusCode = response.code();
+                        details = response.body();
+                        String resultName = details.getResults().get(0).getName();
+                        Log.d(resultName, "onResponse: NAME OF GROCERY STORE IS");
+                        Double groceryStoreLat = details.getResults().get(0).getGeometry().getLocation().getLatitude();
+                        Double groceryStoreLong = details.getResults().get(0).getGeometry().getLocation().getLongitude();
+                        Log.d(distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong).toString(), "onResponse: DISTANCE IS ");
+                        distanceBetweenLocationAndStore = distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong);
+
+
+                    }
+                    @Override
+                    public void onFailure(Call<PlaceApiModel> call, Throwable t) {
+
+                    }
+                });
+
                 if (weightValue < minimumThrehold) {
-                    //Make rest call to places API return true if radius is less than configured radius
-                    //If true, Send a notification
-                    getNotification();
+
+                    if(distanceBetweenLocationAndStore < radiusFirebase ){
+                        getNotificationDistanceIsLess();
+                    }
+                    else {
+                        getNotificationWeightIsLess();
+                    }
 
                 }
+
             }
 
             @Override
@@ -135,38 +178,20 @@ public class ServiceLocation extends Service {
         });
 
 
-        ///TEST TEST TEST TEST TEST TEST
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .create();
-
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        restCalls = retrofit.create(RestCalls.class);
-        final Call<PlaceApiModel> placeApiModelResponse = restCalls.getPlaceDetails(location);
-        placeApiModelResponse.enqueue(new Callback<PlaceApiModel>() {
+        FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        // DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
+        DatabaseReference minimumThreholdRef = database1.getInstance().getReference("Db").child("User1").child("minimumThreshold");
+        minimumThreholdRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onResponse(Call<PlaceApiModel> call, Response<PlaceApiModel> response) {
-                int statusCode = response.code();
-                PlaceApiModel details = response.body();
-                String resultName = details.getResults().get(0).getName();
-                Log.d(resultName, "onResponse: NAME OF GROCERY STORE IS");
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                minimumThrehold = dataSnapshot.getValue(Integer.class);
             }
             @Override
-            public void onFailure(Call<PlaceApiModel> call, Throwable t) {
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
 
             }
         });
-
-
-
-
-
-
 
     }
 
@@ -179,7 +204,7 @@ public class ServiceLocation extends Service {
         }
     }
 
-    public void getNotification() {
+    public void getNotificationWeightIsLess() {
         Intent intent1 = new Intent(this, ServiceLocation.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
         Notification n = new Notification.Builder(this)
@@ -193,7 +218,44 @@ public class ServiceLocation extends Service {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, n);
+        notificationManager.notify(++notificationId, n);
+
+    }// END NOTIFICATION WEIGHT IS LESS
+
+    public void getNotificationDistanceIsLess() {
+        Intent intent1 = new Intent(this, ServiceLocation.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
+        Notification n = new Notification.Builder(this)
+                .setContentTitle("You are near a grocery store")
+                .setContentText("Milk is low")
+                .setSmallIcon(R.drawable.ic_menu_camera)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .build();
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(++notificationId, n);
 
     }
+
+
+
+    private Double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return ((dist) /1.6) * 0.0004233;
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
 }

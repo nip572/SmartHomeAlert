@@ -215,7 +215,7 @@ public class BaseActivity extends AppCompatActivity
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Log.d(intent.getExtras().get("coordinates").toString(), "onReceive: ");
+                   // Log.d(intent.getExtras().get("coordinates").toString(), "onReceive: ");
                 }
             };
         }

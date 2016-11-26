@@ -30,7 +30,7 @@ public interface RestCalls {
     Call<RecipeDetailsResponse> getRecipeDetails(@Path("recipeId") String recipeId);
 
     //MAKE REST CALL TO PLACES API
-    @GET("json?radius=1000&types=grocery_or_supermarket&key=AIzaSyAF8QXex5dgm0UIjBTZLd-e6EgjYUHnuw0")
+    @GET("json?radius=3000&types=grocery_or_supermarket&key=AIzaSyAF8QXex5dgm0UIjBTZLd-e6EgjYUHnuw0")
     Call<PlaceApiModel> getPlaceDetails(@Query("location") String latLong);
 
 
