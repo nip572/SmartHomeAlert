@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nipun.smarthomealert.FridgeFragment">
+    tools:context="com.example.nipun.smarthomealert.FridgeFragment"
+    android:background="@color/colorPrimary">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="4°C"
+        android:textColor="#ffffff"
         android:textSize="36sp"
         android:autoText="false"
         tools:layout_constraintTop_creator="1"
@@ -23,6 +25,8 @@
     <TextView
         android:text="-15°C"
         android:layout_width="wrap_content"
+        android:textColor="#ffffff"
+
         android:layout_height="wrap_content"
         android:textSize="36sp"
         android:id="@+id/textView"
@@ -35,6 +39,8 @@
 
     <TextView
         android:text="Fridge"
+        android:textColor="#ffffff"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
@@ -47,6 +53,8 @@
 
     <TextView
         android:text="Freezer"
+        android:textColor="#ffffff"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
@@ -56,41 +64,20 @@
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/darker_gray"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:layout_width="132dp"
-        android:layout_height="165dp"
-        app:srcCompat="@drawable/milk_bottle"
-        android:id="@+id/imageView2"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="53dp"
-        android:layout_marginTop="46dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:text="450ml left"
+        android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/milk_left"
         android:textSize="36sp"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        android:layout_marginEnd="26dp"
+        android:layout_marginEnd="128dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="46dp" />
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginTop="234dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

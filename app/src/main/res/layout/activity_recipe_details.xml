@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="false">
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,15 +14,12 @@
         android:layout_height="wrap_content"
         >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
-        </ScrollView>
+
 
         <RelativeLayout
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
 
 
         <ImageView
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="350dp"
             android:id="@+id/recipe_details_activity_image"
 
@@ -87,7 +86,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
             android:id="@+id/recipe_details_activity_calories"
             android:paddingBottom="@dimen/activity_horizontal_margin"
             android:paddingLeft="10sp"
@@ -99,136 +98,249 @@
 
 
         </RelativeLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:id = "@+id/ingredients_servings"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
-
-           <!-- <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:textSize="16sp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:id="@+id/recipe_details_activity_instructions" /> -->
-
-
-            <TextView
-                android:text="2 Serving"
-                android:layout_width="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:textSize="14sp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/recipe_details_activity_servings"
-                android:gravity="right"
-                ></TextView>
-        </LinearLayout>>
-        <TextView android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_gravity="center"
-            android:text="Nutrition"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"></TextView>>
-
-        <!--  START OF NUTRITION -->
-
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#d3d3d3"
-        >
-
-        <LinearLayout android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1">
-            <!--> START OF INDIVIDUAL MACROS-->
-            <LinearLayout android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/pro">
-                    </ImageView>>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/recipe_details_activity_protein"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="10dp">
-                    </TextView>>
-            </LinearLayout>>
-            <LinearLayout android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/carbs">
-                </ImageView>>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/recipe_details_activity_carbs"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="10dp"></TextView>>
-            </LinearLayout>>
-            <LinearLayout android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/fats">
-                </ImageView>>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/recipe_details_activity_fats"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="10dp"></TextView>>
-            </LinearLayout>>
-            <LinearLayout android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/fiber">
-                </ImageView>>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/recipe_details_activity_fiber"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="10dp"></TextView>>
-            </LinearLayout>>
-            </LinearLayout>>
-        </LinearLayout>>
 
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:orientation="horizontal">
-        <Button android:layout_height="wrap_content"
+            android:orientation="vertical">>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:id = "@+id/ingredients_servings"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+                <ImageView android:layout_height="25dp"
+                    android:src="@drawable/like_green"
+
+                    android:scaleType="fitXY"
+                    android:layout_width="25dp"
+                    android:id="@+id/recipe_details_activity_likes_img"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+
+                   />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="127"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"/>
+
+                <!-- <TextView
+                     android:text="TextView"
+                     android:layout_width="match_parent"
+                     android:layout_margin="@dimen/activity_horizontal_margin"
+                     android:textSize="16sp"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_vertical|right"
+                     android:id="@+id/recipe_details_activity_instructions" /> -->
+
+
+                <TextView
+                    android:text="2 Serving"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/recipe_details_activity_servings"
+                    android:gravity="right"
+                    ></TextView>
+            </LinearLayout>>
+
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="#e9e9e9">
+
+            <TextView android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center"
+                android:text="Nutrition"
+                android:textColor="#36b47f"
+                android:textSize="18sp"
+         android:textStyle="italic"
+                android:layout_marginBottom="5dp"></TextView>>
+
+            <!--  START OF NUTRITION -->
+
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#e9e9e9"
+                >
+
+                <LinearLayout android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <!--> START OF INDIVIDUAL MACROS-->
+                    <LinearLayout android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <ImageView android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/pro">
+                        </ImageView>>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/recipe_details_activity_protein"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="10dp">
+                        </TextView>>
+                    </LinearLayout>>
+                    <LinearLayout android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <ImageView android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/carbs">
+                        </ImageView>>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/recipe_details_activity_carbs"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="10dp"></TextView>>
+                    </LinearLayout>>
+                    <LinearLayout android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <ImageView android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/fats">
+                        </ImageView>>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/recipe_details_activity_fats"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="10dp"></TextView>>
+                    </LinearLayout>>
+                    <LinearLayout android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <ImageView android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/fiber">
+                        </ImageView>>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/recipe_details_activity_fiber"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="10dp"></TextView>>
+                    </LinearLayout>>
+                </LinearLayout>>
+            </LinearLayout>>
+                </LinearLayout>>
+
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+                <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="View Ingredients"
+                    android:textColor="#006400"
+                    android:id="@+id/recipe_details_activity_view_ingredients_button"
+                    android:background="@null"
+                    android:layout_weight="1">
+                </Button>>
+                <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="View Method"
+                    android:textColor="#006400"
+
+                    android:id="@+id/recipe_details_activity_view_method_button"
+                    android:background="@null"
+                    android:layout_weight="1">
+                </Button>>
+            </LinearLayout>>
+
+        </LinearLayout>
+        <!-- START RELATED RECIPES -->
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#e9e9e9"
+    >
+        <TextView
             android:layout_width="wrap_content"
-            android:text="View Ingredients"
-            android:id="@+id/recipe_details_activity_view_ingredients_button"
-            android:background="@null"
-            android:layout_weight="1">
-        </Button>>
-            <Button android:layout_height="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:textColor="#36b47f"
+            android:textStyle="italic"
+            android:textSize="18sp"
+            android:text="Related Recipes"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#e9e9e9"
+        >
+
+            <RelativeLayout android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="View Method"
-                android:id="@+id/recipe_details_activity_view_method_button"
-                android:background="@null"
                 android:layout_weight="1">
-            </Button>>
+                <ImageView android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/test_img"
+                    android:id="@+id/recipe_details_activity_related_img1"
+                    android:layout_centerHorizontal="true">
+                    </ImageView>>
+
+                <TextView android:layout_height="wrap_content"
+                    android:layout_width="400dip"
+                    android:text="Name1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/recipe_details_activity_related_img1"
+                    android:id="@+id/recipe_details_activity_related_tv1"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_centerHorizontal="true">
+                    </TextView>>
+            </RelativeLayout>>
+
+          <!-- END ITEM 1-->
+
+
+                <RelativeLayout android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/test_img"
+                        android:id="@+id/recipe_details_activity_related_img2"
+                        android:layout_centerHorizontal="true">
+                    </ImageView>>
+                    <TextView android:layout_height="wrap_content"
+                        android:layout_width="400dip"
+                        android:id="@+id/recipe_details_activity_related_tv2"
+
+                        android:text="Name2"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/recipe_details_activity_related_img2"
+                        android:padding="@dimen/activity_horizontal_margin"
+                        android:layout_centerHorizontal="true">
+                    </TextView>>
+
+
+                </RelativeLayout>>
+
+        </LinearLayout>
+    </LinearLayout>>
+    <!-- END RELATED RECIPES -->
         </LinearLayout>>
-    </LinearLayout>
-</LinearLayout>
+        </ScrollView>>
+</LinearLayout> <!--MAIN -->

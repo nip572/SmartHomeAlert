@@ -39,6 +39,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.content.ContentValues.TAG;
 
@@ -50,6 +55,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private  FirebaseAuth.AuthStateListener mAuthListener;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private Integer noOfUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +72,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getEmail());
+                    //USER SIGNED IN
                     //Start Main App
+                         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+                     DatabaseReference createNewUserRef = database1.getInstance().getReference("Count");
+                    createNewUserRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            noOfUsers = dataSnapshot.getValue(Integer.class);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
+
                     Intent startMain = new Intent(Login.this , BaseActivity.class);
                     Login.this.startActivity(startMain);
                 } else {

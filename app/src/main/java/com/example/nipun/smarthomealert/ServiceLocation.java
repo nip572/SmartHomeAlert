@@ -51,6 +51,7 @@ public class ServiceLocation extends Service  {
     private Double currentLong = -121.886329;
     private PlaceApiModel details;
     private  int notificationId = 0;
+    private String pushNotifications = "true";
     private Double distanceBetweenLocationAndStore = 5.0;
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
@@ -63,8 +64,6 @@ public class ServiceLocation extends Service  {
 
     @Override
     public void onCreate() {
-
-
 
         listener = new LocationListener() {
             @Override
@@ -100,6 +99,21 @@ public class ServiceLocation extends Service  {
         //noinspection MissingPermission
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
 
+        //PUSH NOTIFICATION ON OR OFF
+        FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        // DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
+        DatabaseReference pushNotificationsRef = database1.getInstance().getReference("Db").child("User1").child("PushNotifications");
+        pushNotificationsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               pushNotifications = dataSnapshot.getValue(String.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+
+            }
+        });
 
         //RADIUS REFEREMCE
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -116,9 +130,6 @@ public class ServiceLocation extends Service  {
 
             }
         });
-
-
-
 
         DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
         weightRef.addValueEventListener(new ValueEventListener() {
@@ -148,17 +159,14 @@ public class ServiceLocation extends Service  {
                         Double groceryStoreLong = details.getResults().get(0).getGeometry().getLocation().getLongitude();
                         Log.d(distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong).toString(), "onResponse: DISTANCE IS ");
                         distanceBetweenLocationAndStore = distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong);
-
-
                     }
                     @Override
                     public void onFailure(Call<PlaceApiModel> call, Throwable t) {
 
                     }
                 });
-
+                if(pushNotifications.equals("true")){
                 if (weightValue < minimumThrehold) {
-
                     if(distanceBetweenLocationAndStore < radiusFirebase ){
                         getNotificationDistanceIsLess();
                     }
@@ -167,6 +175,7 @@ public class ServiceLocation extends Service  {
                     }
 
                 }
+                    }
 
             }
 
@@ -178,9 +187,9 @@ public class ServiceLocation extends Service  {
         });
 
 
-        FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        FirebaseDatabase database2 = FirebaseDatabase.getInstance();
         // DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
-        DatabaseReference minimumThreholdRef = database1.getInstance().getReference("Db").child("User1").child("minimumThreshold");
+        DatabaseReference minimumThreholdRef = database2.getInstance().getReference("Db").child("User1").child("minimumThreshold");
         minimumThreholdRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -189,12 +198,10 @@ public class ServiceLocation extends Service  {
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-
             }
         });
 
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -233,14 +240,11 @@ public class ServiceLocation extends Service  {
                 .setAutoCancel(true)
                 .build();
 
-
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(++notificationId, n);
 
     }
-
-
 
     private Double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,11 +41,18 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     TextView tvProtein;
     TextView tvCarbs;
     TextView tvFats;
+    TextView tvRelatedRecipe1;
+    TextView tvRelatedRecipe2;
+    ImageView imgRelatedRecipe1;
+    ImageView imgRelatedRecipe2;
     TextView tvFiber;
+    String relatedId1;
+    String relatedId2;
     ListView lvIngredient;
     Button buttonViewIngredients;
     Button buttonViewMethod;
     List<ExtendedIngredient> ingredients;
+    ImageView likeImage;
     AdapterIngredientsList adapterIngredientsList;
     //List<ExtendedIngredient> extendedIngredients;
 
@@ -57,6 +65,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //SET LIKE ICON
+        likeImage = (ImageView) findViewById(R.id.recipe_details_activity_likes_img);
+
+        //Picasso.with(this).load(R.drawable.like_green).resize(100,100).into(likeImage);
+
 
         //Get Intent
         recipeId = getIntent().getStringExtra("recipeId");
@@ -84,7 +98,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 .build();
 
         restCalls = retrofit.create(RestCalls.class);
-        final Call<RecipeDetailsResponse> recipeDetailsResponse = restCalls.getRecipeDetails(recipeId);
+         Call<RecipeDetailsResponse> recipeDetailsResponse = restCalls.getRecipeDetails(recipeId);
         recipeDetailsResponse.enqueue(new Callback<RecipeDetailsResponse>() {
             @Override
             public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {
@@ -123,9 +137,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 tvServings = (TextView) findViewById(R.id.recipe_details_activity_servings);
                 tvServings.setText(details.getServings().toString() + " Servings");
 
-                //Set Adapter
-
-
                 //Set Macros
                 tvProtein = (TextView) findViewById(R.id.recipe_details_activity_protein);
                 tvProtein.setText(details.getNutrition().getNutrients().get(7).getAmount().toString() + " g");
@@ -148,12 +159,89 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //SEND INGREDIENTS
                Intent ingredientsIntent = new Intent(RecipeDetailsActivity.this , ViewIngredientsActivity.class);
-
-//                Log.d(extendedIngredients.get(0).getName(), "onClick: jbtgijjbbt ij");
                 ingredientsIntent.putExtra("ingredients" , (Serializable) ingredients);
                 RecipeDetailsActivity.this.startActivity(ingredientsIntent);
             }
         });
+
+
+        //RELATED RECIPES
+
+        Call<List<ModelRelatedRecipes>> modelRelatedRecipes = restCalls.getSimilarRecipeDetails(recipeId);
+        modelRelatedRecipes.enqueue(new Callback<List<ModelRelatedRecipes>> () {
+
+            //GET RELATED RECIPES CALL
+            @Override
+            public void onResponse(Call<List<ModelRelatedRecipes>>  call, Response<List<ModelRelatedRecipes>>  response) {
+                int statusCode = response.code();
+                relatedId1 = response.body().get(0).getId().toString();
+                Log.d(relatedId1.toString(), "onResponse: RELATED ID 1");
+                //Log.d(response.body().get(0).getTitle(), "onResponse: TITLE 1");
+                tvRelatedRecipe1 = (TextView) findViewById(R.id.recipe_details_activity_related_tv1) ;
+                tvRelatedRecipe2 = (TextView) findViewById(R.id.recipe_details_activity_related_tv2) ;
+
+                tvRelatedRecipe1.setText( response.body().get(0).getTitle());
+                relatedId2 = response.body().get(1).getId().toString();
+                tvRelatedRecipe2.setText( response.body().get(1).getTitle());
+
+                imgRelatedRecipe1 = (ImageView) findViewById( R.id.recipe_details_activity_related_img1);
+                imgRelatedRecipe2 = (ImageView) findViewById( R.id.recipe_details_activity_related_img2);
+
+
+                //START TO SET UP IMAGE VIEWS AND TEXVIEWS
+
+                Call<RecipeDetailsResponse> makeCall = restCalls.getRecipeDetails(relatedId1);
+                makeCall.enqueue(new Callback<RecipeDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {
+                        int statuscode = response.code();
+
+
+                        Picasso.with(getApplicationContext()).load(response.body().getImage()).resize(720 ,500).into(imgRelatedRecipe1);
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeDetailsResponse> call, Throwable t) {
+
+                    }
+                });
+                Call<RecipeDetailsResponse> makeCall2 = restCalls.getRecipeDetails(relatedId2);
+                makeCall2 .enqueue(new Callback<RecipeDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {
+                        int statuscode = response.code();
+
+
+                        Picasso.with(getApplicationContext()).load(response.body().getImage()).resize(720 ,500).into(imgRelatedRecipe2);
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeDetailsResponse> call, Throwable t) {
+
+                    }
+                }); //END SECOND CALL TO RELATED RECIPE
+
+
+
+
+
+            }
+
+
+
+            @Override
+            public void onFailure(Call<List<ModelRelatedRecipes>>  call, Throwable t) {
+
+            }
+        }); // RELATED RECIPE CALLBACK ENDS
+
+
+
+
 
     }
 }

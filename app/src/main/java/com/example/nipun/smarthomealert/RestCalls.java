@@ -33,6 +33,12 @@ public interface RestCalls {
     @GET("json?radius=3000&types=grocery_or_supermarket&key=AIzaSyAF8QXex5dgm0UIjBTZLd-e6EgjYUHnuw0")
     Call<PlaceApiModel> getPlaceDetails(@Query("location") String latLong);
 
+    //MAKE REST CALL TO SIMILAR RECIPES
+    //https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/652592/similar
+    @GET("{recipeId}/similar")
+    @Headers("X-Mashape-Key:Wx48O1cHuGmshBNjAiZ1Jf6c1va3p1tb1tHjsnS1s6NaXsgtzo")
+    Call<List<ModelRelatedRecipes>> getSimilarRecipeDetails(@Path("recipeId") String recipeId);
+
 
 
 

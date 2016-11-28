@@ -21,7 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        etMinimumThreshold = (EditText) findViewById(R.id.minimum_threshold);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("user");
         //myRef.child("minimumThreshhold").setValue(etMinimumThreshold.getText());
