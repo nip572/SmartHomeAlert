@@ -3,7 +3,9 @@ package com.example.nipun.smarthomealert;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +57,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private  FirebaseAuth.AuthStateListener mAuthListener;
     private EditText mEmailField;
     private EditText mPasswordField;
+    String userUid;
     private Integer noOfUsers;
 
     @Override
@@ -74,7 +77,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 if (user != null) {
                     //USER SIGNED IN
                     //Start Main App
-                         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+
+                    userUid = user.getUid();
+
+                    //SAVE USERID
+                    SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferencesUid.edit();
+                    editor.putString("userId" , userUid );
+                    editor.apply();
+
+                    FirebaseDatabase database1 = FirebaseDatabase.getInstance();
                      DatabaseReference createNewUserRef = database1.getInstance().getReference("Count");
                     createNewUserRef.addValueEventListener(new ValueEventListener() {
                         @Override

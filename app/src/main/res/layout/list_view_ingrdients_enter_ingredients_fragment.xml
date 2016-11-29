@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textSize="14sp"
+        android:id="@+id/textView12"
+        android:layout_weight="1" />
+
+    <Button
+        android:text="Remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_view_ingredients_in_enter_ingredients_fragment"
+        android:background="@null"
+        android:textColor="#ff0000"
+        android:layout_weight="1" />
 
 </LinearLayout>
