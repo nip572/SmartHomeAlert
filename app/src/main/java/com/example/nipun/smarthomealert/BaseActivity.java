@@ -30,10 +30,8 @@ import android.Manifest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import static com.example.nipun.smarthomealert.R.id.textView;
 
-public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -46,14 +44,13 @@ public class BaseActivity extends AppCompatActivity
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        // Button button = (Button) findViewById(R.id.button2);
-        setSupportActionBar(toolbar);
+         setSupportActionBar(toolbar);
 
         //Start Location Service
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
@@ -147,7 +144,6 @@ public class BaseActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             // Handle the camera action
             Log.d("Cmaera", "onNavigationItemSelected: ");
@@ -157,22 +153,17 @@ public class BaseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_gallery) {
             Log.d("gallery", "onNavigationItemSelected: ");
-
             Log.d("Base Act", "onNavigationItemSelected: smart recipies ");
             EnterIngredientsFragment enterIngredientsFragment = new EnterIngredientsFragment();
             FragmentManager fragmentManager =  getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , enterIngredientsFragment, enterIngredientsFragment.getTag()).commit();
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-
-
 
     private void signOut() {
         Log.d("base act sign out check" , "SIGNED OUT 1");

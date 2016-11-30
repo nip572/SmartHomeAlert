@@ -6,9 +6,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -33,6 +35,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.R.attr.radius;
+import static java.security.AccessController.getContext;
 
 /**
  * Created by Nipun on 11/24/16.
@@ -42,8 +45,8 @@ public class ServiceLocation extends Service  {
 
     private LocationListener listener;
     private LocationManager locationManager;
-    private Integer weightValue;
-    private Integer minimumThrehold;
+    private Integer weightValue = 0;
+    private Integer minimumThrehold= 0;
     private RestCalls restCalls;
     private String currentlocation = "37.338208,-121.886329";
     private Double currentLat = 37.338208;
@@ -52,6 +55,8 @@ public class ServiceLocation extends Service  {
     private PlaceApiModel details;
     private  int notificationId = 0;
     private String pushNotifications = "true";
+    private String userId;
+    Intent mapIntent1;
     private Double distanceBetweenLocationAndStore = 5.0;
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
@@ -62,8 +67,14 @@ public class ServiceLocation extends Service  {
         return null;
     }
 
+
     @Override
     public void onCreate() {
+
+        SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        userId = sharedPreferencesUid.getString("userId" , "");
+
+
 
         listener = new LocationListener() {
             @Override
@@ -101,8 +112,7 @@ public class ServiceLocation extends Service  {
 
         //PUSH NOTIFICATION ON OR OFF
         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
-        // DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
-        DatabaseReference pushNotificationsRef = database1.getInstance().getReference("Db").child("User1").child("PushNotifications");
+        DatabaseReference pushNotificationsRef = database1.getInstance().getReference(userId).child("pushNotifications");
         pushNotificationsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -117,7 +127,7 @@ public class ServiceLocation extends Service  {
 
         //RADIUS REFEREMCE
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference radiusRef = database.getInstance().getReference("Db").child("User1").child("Radius");
+        final DatabaseReference radiusRef = database.getInstance().getReference(userId).child("radius");
         radiusRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -131,7 +141,7 @@ public class ServiceLocation extends Service  {
             }
         });
 
-        DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
+        DatabaseReference weightRef = database.getInstance().getReference(userId).child("weightValue");
         weightRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -159,6 +169,8 @@ public class ServiceLocation extends Service  {
                         Double groceryStoreLong = details.getResults().get(0).getGeometry().getLocation().getLongitude();
                         Log.d(distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong).toString(), "onResponse: DISTANCE IS ");
                         distanceBetweenLocationAndStore = distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong);
+
+
                     }
                     @Override
                     public void onFailure(Call<PlaceApiModel> call, Throwable t) {
@@ -188,8 +200,7 @@ public class ServiceLocation extends Service  {
 
 
         FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-        // DatabaseReference weightRef = database.getInstance().getReference("Db").child("User1").child("WeightValue");
-        DatabaseReference minimumThreholdRef = database2.getInstance().getReference("Db").child("User1").child("minimumThreshold");
+        DatabaseReference minimumThreholdRef = database.getInstance().getReference(userId).child("minimumThreshold");
         minimumThreholdRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -231,19 +242,37 @@ public class ServiceLocation extends Service  {
 
     public void getNotificationDistanceIsLess() {
         Intent intent1 = new Intent(this, ServiceLocation.class);
+
+
+        //startActivity(mapIntent1);
+
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
+        //PendingIntent intentNavig = PendingIntent.getActivity(this ,(int) System.currentTimeMillis() , mapIntent1 ,0);
         Notification n = new Notification.Builder(this)
                 .setContentTitle("You are near a grocery store")
                 .setContentText("Milk is low")
                 .setSmallIcon(R.drawable.ic_menu_camera)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
+                .addAction(R.drawable.ic_menu_camera, "Drive", getMapNavigationIntent(mapIntent1 , 'q'))
+                .addAction(R.drawable.ic_menu_send, "Walk", getMapNavigationIntent(mapIntent1 , 'w'))
                 .build();
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(++notificationId, n);
 
+    }
+
+
+    public PendingIntent getMapNavigationIntent (Intent intent , char c){
+        // BUILD MAP INTENT
+        Uri gmmIntentUri = Uri.parse("google.navigation:" +c +"="+currentLat.toString()+","+currentLong.toString());
+        intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        intent.setPackage("com.google.android.apps.maps");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent intentNavigation = PendingIntent.getActivity(this ,(int) System.currentTimeMillis() , intent ,0);
+        return  intentNavigation;
     }
 
     private Double distance(double lat1, double lon1, double lat2, double lon2) {

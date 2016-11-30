@@ -80,7 +80,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                     userUid = user.getUid();
 
-                    //SAVE USERID
+
                     SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferencesUid.edit();
                     editor.putString("userId" , userUid );

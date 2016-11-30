@@ -7,12 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.nipun.smarthomealert.SettingsActivity">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:layout_weight="1"
+    android:orientation="horizontal">
 
     <TextView
         android:text="Address"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:clickable="true"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -20,6 +25,20 @@
         android:layout_marginBottom="40dp"
         tools:layout_editor_absoluteX="30dp"
         android:id="@+id/textView5" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:background="@null"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:layout_weight="1"
+        android:text="33428 Pony Loop,Fremont"/>
+
+</LinearLayout>
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -29,11 +48,13 @@
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
     <TextView
         android:text="Push Notifications"
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
+
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="40dp"
@@ -44,6 +65,7 @@
 
         <ToggleButton
             android:layout_width="wrap_content"
+            android:id="@+id/settings_activity_toggle_push_notifications"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:width="10dp"
@@ -61,28 +83,28 @@
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
     <TextView
-        android:text="Distance to grocery store"
+        android:text="Radius"
         android:layout_width="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="40dp"
-
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteY="145dp"
         tools:layout_editor_absoluteX="24dp"
-        android:id="@+id/textView8" />
-
+         />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/settings_activity_radius_edit_text"
             android:gravity="right"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginRight="80dp"
             android:width="10dp"
-            android:textColor="#ff0000"
             android:background="@null"
             android:text="3"
             android:layout_weight="1" />
@@ -98,10 +120,12 @@
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
     <TextView
         android:text="Minimum Threshold for sensor"
         android:layout_width="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
@@ -113,15 +137,15 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/settings_activity_minimum_threshold_edit_text"
             android:gravity="right"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginRight="80dp"
             android:width="10dp"
-            android:textColor="#ff0000"
+
             android:background="@null"
             android:text="300"
             android:layout_weight="1" />
-
         </LinearLayout>>
     <View
         android:layout_width="match_parent"
@@ -132,6 +156,7 @@
          />
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
     <TextView
         android:text="Automatic Order"
@@ -147,6 +172,7 @@
 
         <ToggleButton
             android:layout_width="wrap_content"
+            android:id="@+id/settings_activity_toggle_button_automatic_order"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:width="10dp"
@@ -154,7 +180,6 @@
             android:background="@null"
             android:text="On"
             android:layout_weight="1" />
-
         </LinearLayout>>
     <View
         android:layout_width="match_parent"
@@ -166,22 +191,17 @@
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <TextView
-        android:text="Radius"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        tools:layout_editor_absoluteY="253dp"
-        tools:layout_editor_absoluteX="46dp"
-        android:id="@+id/textView11" />
+
         </LinearLayout>>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        tools:layout_editor_absoluteY="172dp"
-        tools:layout_editor_absoluteX="0dp"
-         />
+
+
+    <Button android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@null"
+        android:layout_gravity="center"
+        android:text="Save"
+        android:id="@+id/settings_activity_save_button"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+    />
+
 </LinearLayout>

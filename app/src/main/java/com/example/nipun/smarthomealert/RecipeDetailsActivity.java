@@ -124,7 +124,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
                 //set Total No. Of Ingredients
                 tvNoOfIngredients = (TextView) findViewById(R.id.recipe_details_activity_no_of_ingredients);
-             ingredients = details.getExtendedIngredients();
+                ingredients = details.getExtendedIngredients();
                 Integer noOfigredients =ingredients.size();
                 tvNoOfIngredients.setText(noOfigredients.toString() + " Ingr       |");
 

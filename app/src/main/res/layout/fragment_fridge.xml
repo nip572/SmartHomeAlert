@@ -1,83 +1,133 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.example.nipun.smarthomealert.FridgeFragment"
-    android:background="@color/colorPrimary">
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="4°C"
-        android:textColor="#ffffff"
-        android:textSize="36sp"
-        android:autoText="false"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="86dp"
-        android:layout_marginTop="13dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/textView4" />
+        android:text="Temperature info"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="60dp"
+       />
 
-    <TextView
-        android:text="-15°C"
+    <!--Layout 1-->
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Freezer"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/temperature_freezer"
+                android:text="-15°C"
+                android:textSize="26sp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:text="Fridge"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/temperature_fridge"
+                android:text="4°C"
+                android:textSize="26sp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                />
+        </LinearLayout>>
+    </LinearLayout>>     <!--Layout 1 END-->
+
+
+    <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textColor="#ffffff"
+        android:text="Weight Information"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
-        android:layout_height="wrap_content"
-        android:textSize="36sp"
-        android:id="@+id/textView"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginEnd="56dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <TextView
-        android:text="Fridge"
-        android:textColor="#ffffff"
+    <!--Layout 2 Start-->
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
 
+        <LinearLayout android:layout_height="wrap_content"
+
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/milk_left"
+                android:text="450 gms"
+                android:textSize="26sp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <!--Layout 2 End-->
+
+    <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="40dp"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Door Status"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
-    <TextView
-        android:text="Freezer"
-        android:textColor="#ffffff"
+    <!--Layout 3 Start-->
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="43dp"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-    <TextView
-        android:text="450ml left"
-        android:textColor="#ffffff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/milk_left"
-        android:textSize="36sp"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginEnd="128dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginTop="234dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/door_open_close"
+                android:text="Open"
+                android:textSize="26sp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+
+
+
+
+</LinearLayout>
+
+
+
+
+
+

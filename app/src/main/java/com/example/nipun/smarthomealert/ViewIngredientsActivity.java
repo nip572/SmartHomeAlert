@@ -5,11 +5,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewIngredientsActivity extends AppCompatActivity {
     AdapterIngredientsList adapterIngredientsList;
+    GroceryList groceryList;
     List<ExtendedIngredient> extendedIngredients;
     ListView lvIngredient;
 
@@ -21,7 +28,7 @@ public class ViewIngredientsActivity extends AppCompatActivity {
         //GET INTENT
         extendedIngredients = (ArrayList)getIntent().getSerializableExtra("ingredients");
 
-        Log.d(extendedIngredients.get(1).getName(), "onCreate: ViewIngredient TESTEST");
+
 
 
         //Set Adapter
@@ -29,6 +36,10 @@ public class ViewIngredientsActivity extends AppCompatActivity {
         adapterIngredientsList = new AdapterIngredientsList(getApplicationContext() , extendedIngredients);
         lvIngredient.setAdapter(adapterIngredientsList);
         adapterIngredientsList.notifyDataSetChanged();
+
+
+
+
 
     }
 }
