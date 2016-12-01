@@ -27,17 +27,19 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:id="@+id/list_view_ingredients_text"
-        android:layout_marginTop="30dp"
         android:layout_weight="1" />
-    <TextView
-        android:text="Add"
-        android:textColor="#008000"
+
+    <ToggleButton
+
         android:layout_width="wrap_content"
+        android:textOff="Add"
+        android:textOn="Remove"
         android:gravity="right"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:clickable="true"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view_ingredients_add"
-        android:layout_marginTop="30dp"
+        android:textColor="#008000"
+        android:background="@null"
+        android:id="@+id/list_view_ingredient_toggle_button"
         android:layout_weight="1" />
+
 </LinearLayout>

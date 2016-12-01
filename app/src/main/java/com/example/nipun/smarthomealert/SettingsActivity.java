@@ -31,7 +31,6 @@ public class SettingsActivity extends AppCompatActivity {
     private ToggleButton tbAutomaticOrder;
     private Button   buttonSave;
     FireBaseModel fireBaseModel;
-
     String userId;
 
 
@@ -117,13 +116,5 @@ public class SettingsActivity extends AppCompatActivity {
                 Log.w( "Failed to read value.", "");
             }
         });
-
-
-
-
-
-
-
-
     }
 }

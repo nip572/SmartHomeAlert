@@ -18,7 +18,6 @@
         android:layout_height="match_parent"
         android:id="@+id/list_view_ingredient_master"
         android:layout_marginLeft="0dp"
-        android:clickable="true"
         android:layout_marginRight="0dp"
         android:dividerHeight="2dp"
         android:divider="#d1d1d1" />
