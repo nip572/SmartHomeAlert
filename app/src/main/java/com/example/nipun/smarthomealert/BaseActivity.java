@@ -53,7 +53,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
        // Button button = (Button) findViewById(R.id.button2);
          setSupportActionBar(toolbar);
 
-        //Start Location Service
+  //START SERVICE
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
         startService(i);
 
