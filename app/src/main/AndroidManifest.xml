@@ -46,10 +46,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBFjgl-L39DVhvNnO0kGyDfzi2OF_4sFPQ" />
 
-        <activity android:name=".GroceryListActivity">
-
-
-        </activity>
     </application>
 
 </manifest>

@@ -41,6 +41,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     TextView displayEmailId;
     NavigationView navigationView;
     private BroadcastReceiver broadcastReceiver;
+    private FireBaseModel fireBaseModel;
 
 
 
@@ -157,6 +158,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             EnterIngredientsFragment enterIngredientsFragment = new EnterIngredientsFragment();
             FragmentManager fragmentManager =  getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , enterIngredientsFragment, enterIngredientsFragment.getTag()).commit();
+        } else if (id == R.id.nav_groceryList){
+            GroceryListFragment groceryListFragment = new GroceryListFragment();
+            FragmentManager fragmentManager =  getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , groceryListFragment, groceryListFragment.getTag()).commit();
         }
 
 

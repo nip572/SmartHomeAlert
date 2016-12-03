@@ -34,7 +34,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.R.attr.angle;
 import static android.R.attr.radius;
+import static android.os.Build.RADIO;
 import static java.security.AccessController.getContext;
 
 /**
@@ -108,7 +110,7 @@ public class ServiceLocation extends Service  {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         //noinspection MissingPermission
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, listener);
 
         //PUSH NOTIFICATION ON OR OFF
         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
@@ -163,7 +165,7 @@ public class ServiceLocation extends Service  {
                     public void onResponse(Call<PlaceApiModel> call, Response<PlaceApiModel> response) {
                         int statusCode = response.code();
                         details = response.body();
-                        String resultName = details.getResults().get(0).getName();
+                        String resultName = details.getResults().get(1).getName();
                         Log.d(resultName, "onResponse: NAME OF GROCERY STORE IS");
                         Double groceryStoreLat = details.getResults().get(0).getGeometry().getLocation().getLatitude();
                         Double groceryStoreLong = details.getResults().get(0).getGeometry().getLocation().getLongitude();
@@ -260,7 +262,7 @@ public class ServiceLocation extends Service  {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(++notificationId, n);
+        notificationManager.notify(0, n);
 
     }
 
@@ -276,13 +278,17 @@ public class ServiceLocation extends Service  {
     }
 
     private Double distance(double lat1, double lon1, double lat2, double lon2) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return ((dist) /1.6) * 0.0004233;
-    }
+
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lon2-lon1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = (float) (earthRadius * c);
+
+        return (dist*.416)/10000000;     }
 
     private double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);

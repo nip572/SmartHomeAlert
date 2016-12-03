@@ -32,7 +32,7 @@ public class ViewIngredientsActivity extends AppCompatActivity {
 
 
         //Set Adapter
-          lvIngredient = (ListView) findViewById(R.id.list_view_ingredient_master);
+        lvIngredient = (ListView) findViewById(R.id.list_view_ingredient_master);
         adapterIngredientsList = new AdapterIngredientsList(getApplicationContext() , extendedIngredients);
         lvIngredient.setAdapter(adapterIngredientsList);
         adapterIngredientsList.notifyDataSetChanged();

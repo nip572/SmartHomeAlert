@@ -6,8 +6,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,6 +50,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 import static android.content.ContentValues.TAG;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -60,11 +65,25 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     String userUid;
     private Integer noOfUsers;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            ActivityCompat.requestPermissions(this, new String[] {
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION },
+                    '1');
+        }
 
 
         mEmailField = (EditText) findViewById(R.id.login_email);
@@ -80,24 +99,23 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                     userUid = user.getUid();
 
-
                     SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferencesUid.edit();
                     editor.putString("userId" , userUid );
                     editor.apply();
 
-                    FirebaseDatabase database1 = FirebaseDatabase.getInstance();
-                     DatabaseReference createNewUserRef = database1.getInstance().getReference("Count");
-                    createNewUserRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            noOfUsers = dataSnapshot.getValue(Integer.class);
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                        }
-                    });
+                        Log.d("BEFORE CODE", "onAuthStateChanged: BEFORE CODE");
+
+
+
+                    //MAkE USER ID
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getInstance().getReference(userUid);
+                    if(myRef== null){
+                        Log.d(TAG, "onAuthStateChanged: myref is null");
+                    }
+                    makeUserInFirebase(user.getUid() , user.getEmail());
+
 
                     Intent startMain = new Intent(Login.this , BaseActivity.class);
                     Login.this.startActivity(startMain);
@@ -118,7 +136,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        FancyButton signInButton = (FancyButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
 
         findViewById(R.id.login_create_account_button).setOnClickListener(this);
@@ -299,6 +317,32 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         }
 }
+
+
+    public void makeUserInFirebase(String userId , String email){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getInstance().getReference(userId);
+        if(myRef == null){
+            FireBaseModel fireBaseModel = new FireBaseModel();
+            fireBaseModel.setPushNotifications("true");
+            fireBaseModel.setAddress(" ");
+            fireBaseModel.setEmail(email);
+            fireBaseModel.setMinimumThreshold(1000);
+            fireBaseModel.setAutomaticOrder("false");
+            fireBaseModel.setOpen("Close");
+            fireBaseModel.setRadius(1);
+            fireBaseModel.setTemperatureValue(14);
+            fireBaseModel.setDaysToOrder(2);
+            fireBaseModel.setWeightValue(250);
+
+            myRef.setValue(fireBaseModel);
+
+
+        }
+
+
+    }
 
 
 }
