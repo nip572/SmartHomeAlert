@@ -67,6 +67,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private EditText mEmailField;
     private EditText mPasswordField;
     String userUid;
+    FireBaseModel fireBaseModel1 = new FireBaseModel();
     String emailId;
     private Integer noOfUsers;
 
@@ -108,31 +109,33 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferencesUid.edit();
                     editor.putString("userId" , userUid );
+                    Log.d(userUid, "onAuthStateChanged:  SHARED PREF USER ID");
                     editor.apply();
 
                     //MAkE USER ID
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     final DatabaseReference myRef = database.getInstance().getReference(userUid);
-                    if(myRef== null){
 
-                        myRef.addValueEventListener(new ValueEventListener() {
+                    myRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                FireBaseModel fireBaseModel = dataSnapshot.getValue(FireBaseModel.class);
-                                if(fireBaseModel == null){
-                                    fireBaseModel.setPushNotifications("true");
-                                    fireBaseModel.setAddress(" ");
-                                    fireBaseModel.setEmail(emailId);
-                                    fireBaseModel.setMinimumThreshold(1000);
-                                    fireBaseModel.setAutomaticOrder("false");
-                                    fireBaseModel.setOpen("Close");
-                                    fireBaseModel.setRadius(1);
-                                    fireBaseModel.setTemperatureValue(14);
-                                    fireBaseModel.setDaysToOrder(2);
-                                    fireBaseModel.setWeightValue(250);
+                                fireBaseModel1 = dataSnapshot.getValue(FireBaseModel.class);
+                                if(fireBaseModel1 == null){
+                                    FireBaseModel fb = new FireBaseModel();
 
-                                    myRef.setValue(fireBaseModel);
+                                    fb.setPushNotifications("true");
+                                    fb.setAddress(" ");
+                                    fb.setEmail(emailId);
+                                    fb.setMinimumThreshold(1000);
+                                    fb.setAutomaticOrder("false");
+                                    fb.setOpen("Close");
+                                    fb.setRadius(1);
+                                    fb.setTemperatureValue(14);
+                                    fb.setDaysToOrder(2);
+                                    fb.setWeightValue(250);
+
+                                    myRef.setValue(fb);
                                 }
 
                             }
@@ -144,7 +147,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             }
                         });
 
-                    }
+
 
                     try {
                         Thread.sleep(5000);
@@ -194,6 +197,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+
+
+
+
+
+
+
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
