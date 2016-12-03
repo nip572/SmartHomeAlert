@@ -17,10 +17,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.app.Fragment;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 
 import static android.content.ContentValues.TAG;
@@ -63,6 +67,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private EditText mEmailField;
     private EditText mPasswordField;
     String userUid;
+    String emailId;
     private Integer noOfUsers;
 
 
@@ -98,25 +103,55 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     //Start Main App
 
                     userUid = user.getUid();
+                    emailId = user.getEmail();
 
                     SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferencesUid.edit();
                     editor.putString("userId" , userUid );
                     editor.apply();
 
-                        Log.d("BEFORE CODE", "onAuthStateChanged: BEFORE CODE");
-
-
-
                     //MAkE USER ID
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getInstance().getReference(userUid);
+                    final DatabaseReference myRef = database.getInstance().getReference(userUid);
                     if(myRef== null){
-                        Log.d(TAG, "onAuthStateChanged: myref is null");
+
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                FireBaseModel fireBaseModel = dataSnapshot.getValue(FireBaseModel.class);
+                                if(fireBaseModel == null){
+                                    fireBaseModel.setPushNotifications("true");
+                                    fireBaseModel.setAddress(" ");
+                                    fireBaseModel.setEmail(emailId);
+                                    fireBaseModel.setMinimumThreshold(1000);
+                                    fireBaseModel.setAutomaticOrder("false");
+                                    fireBaseModel.setOpen("Close");
+                                    fireBaseModel.setRadius(1);
+                                    fireBaseModel.setTemperatureValue(14);
+                                    fireBaseModel.setDaysToOrder(2);
+                                    fireBaseModel.setWeightValue(250);
+
+                                    myRef.setValue(fireBaseModel);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+                                // Failed to read value
+                                Log.w( "Failed to read value.", "");
+                            }
+                        });
+
                     }
-                    makeUserInFirebase(user.getUid() , user.getEmail());
 
+                    try {
+                        Thread.sleep(5000);
 
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Intent startMain = new Intent(Login.this , BaseActivity.class);
                     Login.this.startActivity(startMain);
                 } else {
@@ -141,8 +176,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         findViewById(R.id.login_create_account_button).setOnClickListener(this);
         findViewById(R.id.login_login_button).setOnClickListener(this);
-
-
     }
 
     private void signIn() {
@@ -316,35 +349,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             // ...
 
         }
-}
-
-
-    public void makeUserInFirebase(String userId , String email){
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getInstance().getReference(userId);
-        if(myRef == null){
-            FireBaseModel fireBaseModel = new FireBaseModel();
-            fireBaseModel.setPushNotifications("true");
-            fireBaseModel.setAddress(" ");
-            fireBaseModel.setEmail(email);
-            fireBaseModel.setMinimumThreshold(1000);
-            fireBaseModel.setAutomaticOrder("false");
-            fireBaseModel.setOpen("Close");
-            fireBaseModel.setRadius(1);
-            fireBaseModel.setTemperatureValue(14);
-            fireBaseModel.setDaysToOrder(2);
-            fireBaseModel.setWeightValue(250);
-
-            myRef.setValue(fireBaseModel);
-
-
-        }
-
-
     }
 
-
 }
+
+
+
 
 
