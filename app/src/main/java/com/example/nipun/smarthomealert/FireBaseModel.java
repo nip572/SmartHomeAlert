@@ -20,6 +20,15 @@ public class FireBaseModel {
     private Integer temperatureValue;
     private Integer weightValue;
     private Integer minimumThreshold;
+    private Integer maximumWeight ;
+
+    public Integer getMaximumWeight() {
+        return maximumWeight;
+    }
+
+    public void setMaximumWeight(Integer maximumWeight) {
+        this.maximumWeight = maximumWeight;
+    }
 
     /**
      * 

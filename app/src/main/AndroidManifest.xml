@@ -29,18 +29,18 @@
             />
         <activity
             android:name=".RecipeListActivity"
-            android:parentActivityName=".BaseActivity"
-            android:theme="@style/AppTheme.ActionBarTrans" />
+            android:parentActivityName=".BaseActivity"/>
+            <!--android:theme="@style/AppTheme.ActionBarTrans"-->
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/AppTheme.ActionBarTrans" />
+           />
         <activity
             android:name=".RecipeDetailsActivity"
             android:parentActivityName=".BaseActivity"
-            android:theme="@style/AppTheme.ActionBarTrans" />
+          />
         <activity
             android:name=".ViewIngredientsActivity"
-            android:theme="@style/AppTheme.ActionBarTrans" />
+            />
 
         <service android:name=".ServiceLocation" />
 
