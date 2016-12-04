@@ -2,6 +2,7 @@ package com.example.nipun.smarthomealert;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -31,24 +32,25 @@ public class AdapterGroceryList extends BaseAdapter{
     List<GroceryList> groceryList;
 
 
-    public AdapterGroceryList(Context mContext , List<GroceryList> groceryList ) {
+    public AdapterGroceryList(Context mContext , List<GroceryList> gL ) {
         this.mContext = mContext;
-        this.groceryList = groceryList;
+        this.groceryList = gL;
+        Log.d(gL.size()+""+groceryList.size(), "AdapterGroceryList: ");
 
     }
     @Override
     public int getCount() {
-        return 0;
+        return groceryList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return groceryList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -57,18 +59,13 @@ public class AdapterGroceryList extends BaseAdapter{
         //SHARED PREFERANCE
         SharedPreferences sharedPreferencesUid = mContext.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         userId= sharedPreferencesUid.getString("userId" , "");
-        groceryList = new ArrayList<GroceryList>();
-
         View v = View.inflate(mContext, R.layout.list_view_grocerylist_row, null);
         tvIngredient = (TextView) v.findViewById(R.id.list_view_grocery_list_text);
         imageIngredient = (ImageView) v.findViewById(R.id.list_view_grocery_list_img) ;
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getInstance().getReference(userId);
         tvIngredient.setText(groceryList.get(position).getName());
         Picasso.with(mContext)
                 .load(groceryList.get(position).getImageURL()).resize(200,200)
                 .into(imageIngredient);
-        return null;
+        return v;
     }
 }

@@ -1,10 +1,12 @@
 
 package com.example.nipun.smarthomealert;
 
+import java.io.Serializable;
+
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GroceryList {
+public class GroceryList implements Serializable {
 
     private String imageURL;
     private String name;

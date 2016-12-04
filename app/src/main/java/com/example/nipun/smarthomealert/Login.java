@@ -134,7 +134,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     fb.setTemperatureValue(14);
                                     fb.setDaysToOrder(2);
                                     fb.setWeightValue(250);
-
                                     myRef.setValue(fb);
                                 }
 

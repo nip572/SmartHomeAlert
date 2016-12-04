@@ -110,7 +110,9 @@ public class ServiceLocation extends Service  {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         //noinspection MissingPermission
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, listener);
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 0, listener);
+
 
         //PUSH NOTIFICATION ON OR OFF
         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
@@ -142,6 +144,8 @@ public class ServiceLocation extends Service  {
 
             }
         });
+
+
 
         DatabaseReference weightRef = database.getInstance().getReference(userId).child("weightValue");
         weightRef.addValueEventListener(new ValueEventListener() {
@@ -199,6 +203,10 @@ public class ServiceLocation extends Service  {
 
             }
         });
+
+
+
+
 
 
         FirebaseDatabase database2 = FirebaseDatabase.getInstance();

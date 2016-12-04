@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,16 @@ import android.Manifest;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.Serializable;
+import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +53,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     private BroadcastReceiver broadcastReceiver;
     private FireBaseModel fireBaseModel;
+    static List <GroceryList> gl;
 
 
 
@@ -55,7 +67,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
   //START SERVICE
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
-        //startService(i);
+        startService(i);
+
 
         if(!runtime_permissions()){
 
@@ -97,7 +110,37 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         displayEmailId = (TextView)header.findViewById(R.id.nav_email_id);
         if(user.getDisplayName() != null){displayName.setText(user.getDisplayName()); }
 
-        displayEmailId.setText(user.getEmail());
+        displayEmailId.setText(user.getEmail());    SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
+        String userId = sharedPreferencesUid.getString("userId" , "");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getInstance().getReference(userId);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+               FireBaseModel fbm = dataSnapshot.getValue(FireBaseModel.class);
+                gl = fbm.getGroceryList();
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w( "Failed to read value.", "");
+            }
+        });
+
+
+
+
+
+
+
+
     }
 
     @Override
@@ -217,5 +260,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
         //registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
     }
+
+
+    //get shared pref
+
+
 
 }

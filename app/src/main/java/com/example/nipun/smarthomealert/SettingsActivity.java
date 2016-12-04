@@ -27,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText etMinimumThreshold;
     private EditText etRadius;
+    private EditText etAddress;
     private ToggleButton tbPushNotifictions;
     private ToggleButton tbAutomaticOrder;
     private Button   buttonSave;
@@ -52,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         tbPushNotifictions = (ToggleButton) findViewById(R.id.settings_activity_toggle_push_notifications);
         tbAutomaticOrder = (ToggleButton) findViewById(R.id.settings_activity_toggle_button_automatic_order);
         buttonSave = (Button) findViewById( R.id.settings_activity_save_button);
+        etAddress = (EditText) findViewById(R.id.settings_activity_address_edit_text);
 
 
         //PUSH NOTIFICATIONS
@@ -108,6 +110,26 @@ public class SettingsActivity extends AppCompatActivity {
 
             fireBaseModel = dataSnapshot.getValue( FireBaseModel.class);
                 Log.d(fireBaseModel.getAddress(), "onDataChange: CHECKING VALUE");
+                etRadius.setText(fireBaseModel.getRadius().toString());
+
+                if(fireBaseModel.getPushNotifications().equals("false"))
+                {
+                    tbPushNotifictions.setChecked(false);
+                } else{
+                        tbPushNotifictions.setChecked(true);
+
+                }
+                if(fireBaseModel.getAutomaticOrder().equals("false"))
+                {
+                    tbAutomaticOrder.setChecked(false);
+                } else{
+                    tbAutomaticOrder.setChecked(true);
+
+                }
+                etAddress.setText(fireBaseModel.getAddress());
+
+
+
             }
 
             @Override

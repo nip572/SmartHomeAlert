@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,8 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.id.list;
 
 
 /**
@@ -37,43 +42,40 @@ public class GroceryListFragment extends Fragment {
     }
 
 
+     View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View rootView = inflater.inflate(R.layout.fragment_grocery_list, container, false);
+        groceryList = BaseActivity.gl;
+
+        rootView = inflater.inflate(R.layout.fragment_grocery_list, container, false);
 
         //get shared pref
         SharedPreferences sharedPreferencesUid = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         userId = sharedPreferencesUid.getString("userId" , "");
 
+                if(groceryList.size() != 0) {
+                    TextView tvHeading = (TextView) rootView.findViewById(R.id.fragment_grocery_list_heading);
+                    tvHeading.setTextSize(1 , 18);
 
-        //Second
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getInstance().getReference(userId);
+                    lv = (ListView) rootView.findViewById(R.id.list_view_grocery_list);
+                    //Log.d(groceryList.get(0).getName(), "onDataChange: grocerlistActivity");
+                    adapterGroceryList = new AdapterGroceryList(rootView.getContext(), groceryList);
+                    //Log.d(groceryList.get(0).getName(), "onDataChange: grocerlistActivity");
+                    lv.setAdapter(adapterGroceryList);
+                    //Log.d(groceryList.get(0).getName(), "onDataChange: grocerlistActivity");
+                    adapterGroceryList.notifyDataSetChanged();
+                }
+        else {
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                fireBaseModel = dataSnapshot.getValue(FireBaseModel.class);
-                groceryList = fireBaseModel.getGroceryList();
-                Log.d(groceryList.get(0).getName(), "onDataChange: grocerlistActivity");
+                    //ADD CODE FOR DISPLAYING NO ITEMS
+                    TextView tvHeading = (TextView) rootView.findViewById(R.id.fragment_grocery_list_heading);
+                    tvHeading.setText("No Items in the list");
+                    tvHeading.setTextSize(1 , 18);
 
-                lv = (ListView) rootView.findViewById(R.id.list_view_ingredient_master);
-                adapterGroceryList = new AdapterGroceryList(rootView.getContext() , groceryList);
-                lv.setAdapter(adapterGroceryList);
-                adapterGroceryList.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w( "Failed to read value.", "");
-            }
-        });
-
+                }
 
         return rootView;
     }
