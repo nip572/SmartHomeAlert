@@ -7,6 +7,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,6 +21,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,6 +40,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.R.attr.angle;
+import static android.R.attr.gravity;
 import static android.R.attr.radius;
 import static android.os.Build.RADIO;
 import static java.security.AccessController.getContext;
@@ -43,7 +49,7 @@ import static java.security.AccessController.getContext;
  * Created by Nipun on 11/24/16.
  */
 
-public class ServiceLocation extends Service  {
+public class ServiceLocation extends Service {
 
     private LocationListener listener;
     private LocationManager locationManager;
@@ -60,6 +66,8 @@ public class ServiceLocation extends Service  {
     private String userId;
     Intent mapIntent1;
     private Double distanceBetweenLocationAndStore = 5.0;
+    private SensorManager mSensorManager;
+    private ShakeEventListener mSensorListener;
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
@@ -86,6 +94,7 @@ public class ServiceLocation extends Service  {
                 currentlocation = location.getLatitude() + ","+ location.getLongitude();
                 currentLat = location.getLatitude();
                 currentLong= location.getLongitude();
+                Log.d(currentLat + " " + currentLong, "onLocationChanged: location update");
                 sendBroadcast(i);
             }
             @Override
@@ -106,9 +115,34 @@ public class ServiceLocation extends Service  {
 
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
-        //noinspection MissingPermission
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 0, listener);
+     mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+            public void onShake() {
+                Log.d("SHAKE", "onShake: SHAKE");
+
+                try{
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);}
+                catch (SecurityException e){
+                    Log.d("Not given permission", "onCreate: Security exception");
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
 
 
         //PUSH NOTIFICATION ON OR OFF
@@ -264,6 +298,8 @@ public class ServiceLocation extends Service  {
     }
 
 
+
+
     public PendingIntent getMapNavigationIntent (Intent intent , char c){
         // BUILD MAP INTENT
         Uri gmmIntentUri = Uri.parse("google.navigation:" +c +"="+currentLat.toString()+","+currentLong.toString());
@@ -292,6 +328,17 @@ public class ServiceLocation extends Service  {
     }
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+
+        return START_STICKY;
     }
 
 }

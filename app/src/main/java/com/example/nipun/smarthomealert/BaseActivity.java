@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,10 +44,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.util.List;
 
+import static android.app.Service.START_STICKY;
 import static java.security.AccessController.getContext;
 
 
-public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -54,7 +60,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private BroadcastReceiver broadcastReceiver;
     private FireBaseModel fireBaseModel;
     static List <GroceryList> gl;
+    private SensorManager mSensorManager;
 
+    private ShakeEventListener mSensorListener;
 
 
     @Override
@@ -67,7 +75,18 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
   //START SERVICE
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
-       // startService(i);
+        startService(i);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+            public void onShake() {
+                Toast.makeText(BaseActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+                Log.d("there was a shake", "onShake: ");
+            }
+        });
 
 
         if(!runtime_permissions()){
@@ -251,11 +270,26 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
             };
         }
-        //registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
+
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+        registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
     }
 
 
-    //get shared pref
+
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
+    }
+
+
+
+
+
 
 
 
