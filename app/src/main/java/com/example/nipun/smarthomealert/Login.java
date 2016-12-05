@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -77,6 +78,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -155,7 +157,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    Intent startMain = new Intent(Login.this , BaseActivity.class);
+                    Intent startMain = new Intent(Login.this , WelcomeActivity.class);
                     Login.this.startActivity(startMain);
                 } else {
                     // User is signed out

@@ -67,7 +67,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
   //START SERVICE
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
-        startService(i);
+       // startService(i);
 
 
         if(!runtime_permissions()){
