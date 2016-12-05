@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 import static android.R.attr.button;
 import static android.R.attr.value;
 import static java.security.AccessController.getContext;
@@ -30,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText etAddress;
     private ToggleButton tbPushNotifictions;
     private ToggleButton tbAutomaticOrder;
-    private Button   buttonSave;
+    private FancyButton   buttonSave;
     FireBaseModel fireBaseModel;
     String userId;
 
@@ -49,10 +51,10 @@ public class SettingsActivity extends AppCompatActivity {
         myRef = database.getInstance().getReference(userId);
         //Getting refrences
         etRadius = (EditText) findViewById( R.id.settings_activity_radius_edit_text);
-        //etMinimumThreshold = (EditText) findViewById(R.id.settings_activity_minimum_threshold_edit_text);
+        etMinimumThreshold = (EditText) findViewById(R.id.settings_activity_minimum_threshold_edit_text);
         tbPushNotifictions = (ToggleButton) findViewById(R.id.settings_activity_toggle_push_notifications);
         tbAutomaticOrder = (ToggleButton) findViewById(R.id.settings_activity_toggle_button_automatic_order);
-        buttonSave = (Button) findViewById( R.id.settings_activity_save_button);
+        buttonSave = (FancyButton) findViewById( R.id.settings_activity_save_button);
         etAddress = (EditText) findViewById(R.id.settings_activity_address_edit_text);
 
 
@@ -97,6 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
             fireBaseModel.setRadius(Integer.parseInt(etRadius.getText().toString()));
+                fireBaseModel.setMinimumThreshold(Integer.parseInt(etMinimumThreshold.getText().toString()));
                 //fireBaseModel.setMinimumThreshold(Integer.parseInt(etMinimumThreshold.getText().toString()));
             myRef.setValue(fireBaseModel);
             }
@@ -111,6 +114,7 @@ public class SettingsActivity extends AppCompatActivity {
             fireBaseModel = dataSnapshot.getValue( FireBaseModel.class);
                 Log.d(fireBaseModel.getAddress(), "onDataChange: CHECKING VALUE");
                 etRadius.setText(fireBaseModel.getRadius().toString());
+                etMinimumThreshold.setText(fireBaseModel.getMinimumThreshold().toString());
 
                 if(fireBaseModel.getPushNotifications().equals("false"))
                 {
@@ -127,8 +131,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                 }
                 etAddress.setText(fireBaseModel.getAddress());
-
-
 
             }
 

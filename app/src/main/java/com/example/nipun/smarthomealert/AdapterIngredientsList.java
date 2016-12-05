@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class AdapterIngredientsList extends BaseAdapter {
     String userId;
     FireBaseModel fireBaseModel;
     List<GroceryList> groceryList;
+    HashSet<GroceryList> groceryListHashSet;
 
     public AdapterIngredientsList(Context mContext , List<ExtendedIngredient> extendedIngredients ) {
         this.mContext = mContext;
@@ -104,9 +107,9 @@ public class AdapterIngredientsList extends BaseAdapter {
                     gl.setName(extendedIngredients.get(position).getName());
                     gl.setImageURL(extendedIngredients.get(position).getImage());
                     groceryList.add(gl);
-                    fireBaseModel = new FireBaseModel();
-                    fireBaseModel.setGroceryList(groceryList);
-                    myRef.child("groceryList").setValue(groceryList);
+                        fireBaseModel = new FireBaseModel();
+                        fireBaseModel.setGroceryList(groceryList);
+                        myRef.child("groceryList").setValue(groceryList);
 
 
                 } else {
@@ -131,12 +134,6 @@ public class AdapterIngredientsList extends BaseAdapter {
 
             }
         });
-
-
-
-
-
-
         return v;
     }
 }

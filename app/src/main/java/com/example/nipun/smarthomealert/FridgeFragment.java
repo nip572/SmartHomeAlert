@@ -1,5 +1,6 @@
 package com.example.nipun.smarthomealert;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -144,6 +146,22 @@ public class FridgeFragment extends Fragment {
 */
         //// START AGAIN
 
+
+        //ON CLICK FOR RELATIVE LAYOUT
+
+        RelativeLayout relativeLayoutForMaxWeight = (RelativeLayout) rootView.findViewById(
+                R.id.fridge_fragment_relative_layout_maximum_weight);
+
+        relativeLayoutForMaxWeight.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         tvOpenClose = (TextView) rootView.findViewById(R.id.door_open_close);
@@ -171,8 +189,8 @@ public class FridgeFragment extends Fragment {
                 openClose = fireBaseModel.getOpen();
                 tvOpenClose.setText(openClose);
 
-                Double percentageLeft = Double.valueOf((currentWeight *100)/maxWeight);
-                tvCircle_text.setText(percentageLeft.toString());
+                Integer percentageLeft = Integer.valueOf((currentWeight *100)/maxWeight);
+                tvCircle_text.setText(percentageLeft.toString() + " %");
 
 
                 weightBar = (ProgressBar) rootView.findViewById(R.id.weightProgressBar);

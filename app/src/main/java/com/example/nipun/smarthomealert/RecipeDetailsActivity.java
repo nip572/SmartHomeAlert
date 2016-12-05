@@ -104,9 +104,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<RecipeDetailsResponse> call, Response<RecipeDetailsResponse> response) {
                 int statusCode = response.code();
                 RecipeDetailsResponse details = response.body();
-                //Log.d("recipe details activity" , String.valueOf(statusCode));
-              //  Log.d(details.getInstructions(), "onResponse: recipeDetailsActivity");
-               // tvInstructions = (TextView) findViewById(R.id.recipe_details_activity_instructions);
                 String s1 = "<li>";
                 String s2 = "</li>";
                 steps = details.getInstructions().replaceAll("\\<[^>]*>","");
@@ -115,7 +112,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 for(String s : stepsBreakdown){
                     s3 = s + "\r\n";
                 }
-               // Log.d(s3, "onResponse: newline ");
+                Log.d(steps, "onResponse: newline ");
               //  tvInstructions.setText(s3);
 
                 //Set ready In Minutes
@@ -153,7 +150,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             }
         }); // END CALLBACK
 
-            buttonViewIngredients = (Button) findViewById(R.id.recipe_details_activity_view_ingredients_button);
+        buttonViewIngredients = (Button) findViewById(R.id.recipe_details_activity_view_ingredients_button);
         buttonViewIngredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

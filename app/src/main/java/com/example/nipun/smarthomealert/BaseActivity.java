@@ -67,7 +67,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
   //START SERVICE
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
-        //startService(i);
+        startService(i);
 
 
         if(!runtime_permissions()){
@@ -75,14 +75,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

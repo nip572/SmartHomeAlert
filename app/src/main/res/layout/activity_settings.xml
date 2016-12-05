@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_settings"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nipun.smarthomealert.SettingsActivity">
+    tools:context="com.example.nipun.smarthomealert.SettingsActivity"
+    android:weightSum="1">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:layout_weight="1"
+    android:layout_height="60dp"
     android:orientation="horizontal">
+
 
     <TextView
         android:text="Address"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:clickable="true"
         android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:paddingTop="5dp"
+        android:layout_gravity="center"
+        android:textColor="#000000"
+        android:gravity="left"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        tools:layout_editor_absoluteY="34dp"
-        android:layout_marginBottom="40dp"
-        tools:layout_editor_absoluteX="30dp"
-        />
+        android:textSize="16sp"
+        android:layout_weight="1" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp"
-        android:background="@null"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_gravity="right"
-        android:gravity="right"
+        android:inputType="textPersonName"
         android:id="@+id/settings_activity_address_edit_text"
-        android:layout_weight="1"
-        android:text="33428 Pony Loop,Fremont"/>
+        android:text="SJSU"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#808080"
+        android:ems="10"
+        android:paddingTop="5dp"
+        android:background="@null"
+        android:layout_weight="1" />
+
 
 </LinearLayout>
 
@@ -48,32 +55,33 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="60dp"
         android:orientation="horizontal">
-    <TextView
-        android:text="Push Notifications"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
 
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="40dp"
-        tools:layout_editor_absoluteY="99dp"
-        tools:layout_editor_absoluteX="32dp"
-        android:id="@+id/textView6"
-        android:layout_weight="1" />
+        <TextView
+            android:text="Push Notifications"
+            android:layout_width="wrap_content"
+            android:textColor="#000000"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:gravity="left"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:id="@+id/textView4"
+            android:layout_weight="1" />
 
         <ToggleButton
             android:layout_width="wrap_content"
             android:id="@+id/settings_activity_toggle_push_notifications"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:width="10dp"
             android:textColor="#ff0000"
             android:background="@null"
             android:text="On"
             android:layout_weight="1" />
+
     </LinearLayout>>
     <View
         android:layout_width="match_parent"
@@ -83,21 +91,21 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="60dp"
         android:orientation="horizontal">
 
-    <TextView
-        android:text="Radius"
-        android:layout_width="wrap_content"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="145dp"
-        tools:layout_editor_absoluteX="24dp"
-         />
+        <TextView
+            android:text="Radius"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:gravity="left"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_weight="1" />
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,6 +113,7 @@
             android:gravity="right"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginRight="80dp"
+            android:textColor="#808080"
             android:width="10dp"
             android:background="@null"
             android:text="3"
@@ -120,49 +129,54 @@
         android:id="@+id/view" />
 
     <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="60dp"
         android:orientation="horizontal">
-    <TextView
-        android:text="Minimum Threshold for sensor"
-        android:layout_width="wrap_content"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        tools:layout_editor_absoluteY="367dp"
-        tools:layout_editor_absoluteX="46dp"
-        android:id="@+id/textView9" />
+
+        <TextView
+            android:text="Minimum Threshold for sensor"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:gravity="left"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_weight="1" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/settings_activity_minimum_threshold_edit_text"
             android:gravity="right"
+            android:textColor="#808080"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginRight="80dp"
             android:width="10dp"
-
             android:background="@null"
             android:text="300"
             android:layout_weight="1" />
-        </LinearLayout>>
+
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         tools:layout_editor_absoluteY="172dp"
-        tools:layout_editor_absoluteX="0dp"
-         />
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        tools:layout_editor_absoluteX="0dp" />
+
+
+   <LinearLayout android:layout_width="match_parent"
+        android:layout_height="65dp"
+       android:orientation="horizontal"
+       android:layout_weight="0.05">
     <TextView
         android:text="Automatic Order"
         android:layout_width="wrap_content"
         android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -181,28 +195,87 @@
             android:background="@null"
             android:text="On"
             android:layout_weight="1" />
-        </LinearLayout>>
+   </LinearLayout>
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         tools:layout_editor_absoluteY="172dp"
-        tools:layout_editor_absoluteX="0dp"
-        />
+        tools:layout_editor_absoluteX="0dp" />
+
+
     <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="65dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.05">
+        <TextView
+            android:text="Maximum Weight"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="40dp"
+            tools:layout_editor_absoluteY="310dp"
+            tools:layout_editor_absoluteX="46dp"
+            />
 
-        </LinearLayout>>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:width="10dp"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:textColor="#ff0000"
+            android:background="@null"
+            android:text="On"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        tools:layout_editor_absoluteY="172dp"
+        tools:layout_editor_absoluteX="0dp" />
 
 
-    <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:background="@null"
-        android:layout_gravity="center"
-        android:text="Save"
+
+    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/settings_activity_save_button"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-    />
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        fancy:fb_ghost="false"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:paddingTop="10dp"
+        fancy:fb_borderColor="#36b47f"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#36b47f"
+        fancy:fb_focusColor="#13d203"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="30dp"
+        fancy:fb_text="Save"
+        fancy:fb_textColor="#ffffff"
+         />
+    <!--
+
+        <Button android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@null"
+            android:layout_gravity="bottom"
+            android:text="Save"
+            android:id="@+id/settings_activity_save_button"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+        />
+        -->
+
+
 
 </LinearLayout>

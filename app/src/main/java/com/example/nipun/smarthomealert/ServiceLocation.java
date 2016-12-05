@@ -88,12 +88,9 @@ public class ServiceLocation extends Service  {
                 currentLong= location.getLongitude();
                 sendBroadcast(i);
             }
-
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
-
             }
-
             @Override
             public void onProviderEnabled(String s) {
 
@@ -145,8 +142,6 @@ public class ServiceLocation extends Service  {
             }
         });
 
-
-
         DatabaseReference weightRef = database.getInstance().getReference(userId).child("weightValue");
         weightRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -176,7 +171,6 @@ public class ServiceLocation extends Service  {
                         Log.d(distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong).toString(), "onResponse: DISTANCE IS ");
                         distanceBetweenLocationAndStore = distance(groceryStoreLat , groceryStoreLong , currentLat ,currentLong);
 
-
                     }
                     @Override
                     public void onFailure(Call<PlaceApiModel> call, Throwable t) {
@@ -203,11 +197,6 @@ public class ServiceLocation extends Service  {
 
             }
         });
-
-
-
-
-
 
         FirebaseDatabase database2 = FirebaseDatabase.getInstance();
         DatabaseReference minimumThreholdRef = database.getInstance().getReference(userId).child("minimumThreshold");
