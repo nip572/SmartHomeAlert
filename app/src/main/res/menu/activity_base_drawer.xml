@@ -9,12 +9,23 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Recipies" />
+            android:title="Recipes" />
 
         <item
             android:id="@+id/nav_groceryList"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Grocerly list" />
+            android:title="Grocery list" />
+    </group>
+
+
+
+    <group android:checkableBehavior="single">
+
+      <item android:title="Nearby Grocery Stores"
+          android:id="@+id/nav_nearby"
+          android:icon="@drawable/ic_menu_send"/>
+
+
     </group>
 
 </menu>

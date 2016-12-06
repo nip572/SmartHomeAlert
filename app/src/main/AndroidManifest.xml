@@ -45,7 +45,6 @@
 
         <activity
             android:name=".WelcomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             />
 
 

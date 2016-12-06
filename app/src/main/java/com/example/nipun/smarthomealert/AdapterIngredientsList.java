@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,6 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static android.R.id.list;
+import static android.R.id.toggle;
+import static android.media.CamcorderProfile.get;
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
@@ -40,8 +46,11 @@ public class AdapterIngredientsList extends BaseAdapter {
     DatabaseReference myRef;
     String userId;
     FireBaseModel fireBaseModel;
-    List<GroceryList> groceryList;
-    HashSet<GroceryList> groceryListHashSet;
+    static List<GroceryList> groceryList;
+    List<GroceryList> gl;
+    boolean forAdd;
+    View v;
+
 
     public AdapterIngredientsList(Context mContext , List<ExtendedIngredient> extendedIngredients ) {
         this.mContext = mContext;
@@ -69,13 +78,13 @@ public class AdapterIngredientsList extends BaseAdapter {
         //SHARED PREFERANCE
         SharedPreferences sharedPreferencesUid = mContext.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         userId= sharedPreferencesUid.getString("userId" , "");
-        groceryList = new ArrayList<GroceryList>();
+
 
 
 
 
         //Log.d("TEST", "getView: TEST");
-        View v = View.inflate(mContext, R.layout.list_view_ingredients_row, null);
+        v = View.inflate(mContext, R.layout.list_view_ingredients_row, null);
         tvIngredient = (TextView) v.findViewById(R.id.list_view_ingredients_text);
         tbAddtoGroceryList = (ToggleButton) v.findViewById(R.id.list_view_ingredient_toggle_button);
 
@@ -95,38 +104,89 @@ public class AdapterIngredientsList extends BaseAdapter {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getInstance().getReference(userId);
 
+        DatabaseReference firebasetRef = database.getInstance().getReference(userId);
+        firebasetRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                FireBaseModel fireBaseModel = dataSnapshot.getValue(FireBaseModel.class);
+                 gl = fireBaseModel.getGroceryList();
+                Log.d(TAG, "onDataChange: ");
+/*
+
+                if(gl != null) {
+                    tbAddtoGroceryList.setOnCheckedChangeListener(null);
+                    for(GroceryList g : groceryList){
+                        for(ExtendedIngredient eI : extendedIngredients){
+                            if(g.getName().equals(eI.getName())){
+                                tbAddtoGroceryList.setChecked(true);
+                            }
+                            else {
+                                tbAddtoGroceryList.setChecked(false);
+                            }
+
+                        }
+                    }
+
+                }
+*/
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w( "Failed to read value.", "");
+            }
+        });
+
 
         //CLICK LISTENER FOR ADD TOGGLE BUTTON
         tbAddtoGroceryList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     //ENABLED
-
+                    Log.d(TAG, "onCheckedChanged: I AM BEING CALLED");
                     tbAddtoGroceryList.setTextColor(Color.parseColor("#008000"));
-                    GroceryList gl = new GroceryList();
-                    gl.setName(extendedIngredients.get(position).getName());
-                    gl.setImageURL(extendedIngredients.get(position).getImage());
-                    groceryList.add(gl);
-                        fireBaseModel = new FireBaseModel();
-                        fireBaseModel.setGroceryList(groceryList);
-                        myRef.child("groceryList").setValue(groceryList);
+                    GroceryList groceryItem = new GroceryList();
+                    groceryItem.setName(extendedIngredients.get(position).getName());
+                    groceryItem.setImageURL(extendedIngredients.get(position).getImage());
+                            Log.d("Existing List",""+gl);
+                            if(!gl.contains(groceryItem)){
+                                gl.add(groceryItem);
+                                fireBaseModel = new FireBaseModel();
+                                fireBaseModel.setGroceryList(gl);
+                                myRef.child("groceryList").setValue(gl);
+                            }else{
+                                Context context = v.getContext();
+                                CharSequence text = "Item Already Added in Shopping List!";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                            }
+
+                    }
 
 
-                } else {
+
+                 else {
                     //DISABLED
                     tbAddtoGroceryList.setTextColor(Color.parseColor("#ff0000"));
                     Integer num = 0;
                     String nameOfIngredient = extendedIngredients.get(position).getName();
-                    for(int i = 0;i < groceryList.size() ; i++ ){
-                        GroceryList item = groceryList.get(i);
-                        if(item.getName().equals(nameOfIngredient)){
-                            num = i;
-                        }
-                    }
-                    groceryList.remove(groceryList.get(num));
-                    myRef.child("groceryList").removeValue();
-                    myRef.child("groceryList").setValue(groceryList);
-                    //myRgref.child("groceryList").child(i.toString()).removeValue();
+
+                    Log.d("RemoveList",""+extendedIngredients.get(position).getName());
+                    Log.d("gl",""+gl);
+                    GroceryList removeItem = new GroceryList();
+                    removeItem.setName(extendedIngredients.get(position).getName());
+                   if(gl.contains(removeItem)){
+                       gl.remove(removeItem);
+                       myRef.child("groceryList").setValue(null);
+                       myRef.child("groceryList").setValue(gl);
+
+                   }
 
 
 

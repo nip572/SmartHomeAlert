@@ -170,8 +170,8 @@ public class FridgeFragment extends Fragment {
         tvMaximumWeight = (TextView) rootView.findViewById(R.id.maximum_weight);
         tvCircle_text = (TextView) rootView.findViewById(progress_circle_text);
 
-        DatabaseReference maximumWeightRef = database.getInstance().getReference(userId);
-        maximumWeightRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference firebasetRef = database.getInstance().getReference(userId);
+        firebasetRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -181,7 +181,7 @@ public class FridgeFragment extends Fragment {
                 tvMaximumWeight.setText(maxWeight.toString() + " ml");
 
                 currentWeight = fireBaseModel.getWeightValue();
-                milkView.setText(currentWeight.toString());
+                milkView.setText(currentWeight.toString() + " ml");
 
                 tempValue = fireBaseModel.getTemperatureValue();
                 tvFridge.setText(tempValue.toString() + "°C");
@@ -190,7 +190,7 @@ public class FridgeFragment extends Fragment {
                 tvOpenClose.setText(openClose);
 
                 Integer percentageLeft = Integer.valueOf((currentWeight *100)/maxWeight);
-                tvCircle_text.setText(percentageLeft.toString() + " %");
+                tvCircle_text.setText(percentageLeft.toString() + "%");
 
 
                 weightBar = (ProgressBar) rootView.findViewById(R.id.weightProgressBar);

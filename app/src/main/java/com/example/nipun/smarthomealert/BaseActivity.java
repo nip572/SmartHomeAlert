@@ -42,10 +42,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 
 import static android.app.Service.START_STICKY;
 import static java.security.AccessController.getContext;
+import static java.util.Collections.addAll;
 
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
@@ -76,17 +78,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
   //START SERVICE
         Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
         startService(i);
-
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensorListener = new ShakeEventListener();
-
-        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
-
-            public void onShake() {
-                Toast.makeText(BaseActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
-                Log.d("there was a shake", "onShake: ");
-            }
-        });
 
 
         if(!runtime_permissions()){
@@ -135,6 +126,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 // whenever data at this location is updated.
                FireBaseModel fbm = dataSnapshot.getValue(FireBaseModel.class);
                 gl = fbm.getGroceryList();
+                //gl = null;
 
 
             }
@@ -271,20 +263,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             };
         }
 
-        mSensorManager.registerListener(mSensorListener,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_UI);
+
         registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
     }
 
 
 
 
-    @Override
-    protected void onPause() {
-        mSensorManager.unregisterListener(mSensorListener);
-        super.onPause();
-    }
+
 
 
 

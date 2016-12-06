@@ -21,9 +21,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static android.R.id.list;
+import static android.media.CamcorderProfile.get;
+import static android.os.Build.VERSION_CODES.M;
+import static com.example.nipun.smarthomealert.BaseActivity.gl;
+import static java.util.Collections.addAll;
 
 
 /**
@@ -47,9 +52,22 @@ public class GroceryListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        groceryList = BaseActivity.gl;
+
+
 
         rootView = inflater.inflate(R.layout.fragment_grocery_list, container, false);
+        groceryList = BaseActivity.gl;
+        ArrayList<Integer> ref = new ArrayList<>();
+
+        HashSet<GroceryList> hs = new HashSet<GroceryList>();
+        hs.addAll(groceryList);
+        groceryList.clear();
+        groceryList.addAll(hs);
+
+    for(GroceryList g : groceryList){
+        Log.d(g.getName(), "onCreateView: TESTING");
+    }
+
 
         //get shared pref
         SharedPreferences sharedPreferencesUid = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);

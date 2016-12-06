@@ -95,6 +95,12 @@ public class ServiceLocation extends Service {
                 currentLat = location.getLatitude();
                 currentLong= location.getLongitude();
                 Log.d(currentLat + " " + currentLong, "onLocationChanged: location update");
+
+                //UPDATE LOCATION
+                SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferencesUid.edit();
+                editor.putString("currentLat" , currentLat.toString());
+                editor.putString("currentLong" , currentLong.toString());
                 sendBroadcast(i);
             }
             @Override
@@ -125,13 +131,23 @@ public class ServiceLocation extends Service {
 
             public void onShake() {
                 Log.d("SHAKE", "onShake: SHAKE");
-
                 try{
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);}
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    locationManager.removeUpdates(listener);
+
+                }
                 catch (SecurityException e){
                     Log.d("Not given permission", "onCreate: Security exception");
                 }
+
+
             }
+
         });
 
 
