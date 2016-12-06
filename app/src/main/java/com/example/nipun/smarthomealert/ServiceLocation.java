@@ -96,12 +96,19 @@ public class ServiceLocation extends Service {
                 currentLong= location.getLongitude();
                 Log.d(currentLat + " " + currentLong, "onLocationChanged: location update");
 
-                //UPDATE LOCATION
-                SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferencesUid.edit();
-                editor.putString("currentLat" , currentLat.toString());
-                editor.putString("currentLong" , currentLong.toString());
+                //Prepare share preferance
+                SharedPreferences sharedPreferencesLat = getSharedPreferences("Lat", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editorLat = sharedPreferencesLat.edit();
+                editorLat.putString("currentLat" , currentLat.toString());
+                editorLat.putString("currentLong" , currentLong.toString());
+                editorLat.apply();
+
+            ;
+
+
+
                 sendBroadcast(i);
+
             }
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
@@ -149,16 +156,6 @@ public class ServiceLocation extends Service {
             }
 
         });
-
-
-
-
-
-
-
-
-
-
 
 
         //PUSH NOTIFICATION ON OR OFF

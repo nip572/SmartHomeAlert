@@ -4,17 +4,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/fridge_icon_1"
             android:title="My Smart fridge" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/recipe_icon"
             android:title="Recipes" />
 
         <item
             android:id="@+id/nav_groceryList"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Grocery list" />
+            android:icon="@drawable/list_icon_1"
+            android:title="Grocery list"
+          />
     </group>
 
 
@@ -23,7 +24,7 @@
 
       <item android:title="Nearby Grocery Stores"
           android:id="@+id/nav_nearby"
-          android:icon="@drawable/ic_menu_send"/>
+          android:icon="@drawable/nearby"/>
 
 
     </group>

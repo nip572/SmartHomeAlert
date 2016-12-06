@@ -255,5 +255,12 @@ public class Result {
         this.vicinity = vicinity;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "name='" + name + '\'' +
+                ", openingHours=" + openingHours +
+                '}';
+    }
 }
 

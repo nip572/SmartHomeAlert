@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.nipun.smarthomealert.GroceryListFragment">
@@ -25,9 +26,32 @@
         android:divider="#d1d1d1" />
 
     <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:background="@null"
+        android:layout_width="match_parent"
+        android:background="#36b47f"
+        android:textColor="#ffffff"
         android:layout_gravity="center"
         android:text="Submit"/>
 
+ <!--   <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/login_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fancy:fb_ghost="false"
+        android:layout_weight="1"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        fancy:fb_borderColor="#36b47f"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#36b47f"
+        fancy:fb_focusColor="#13d203"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="30dp"
+        fancy:fb_text="Submit"
+        fancy:fb_textColor="#ffffff"
+        android:layout_marginStart="47dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginTop="213dp"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="213dp"
+         />-->
 </LinearLayout>

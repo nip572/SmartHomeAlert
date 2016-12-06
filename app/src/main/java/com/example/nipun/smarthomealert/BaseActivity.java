@@ -210,6 +210,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager =  getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , groceryListFragment, groceryListFragment.getTag()).commit();
         }
+        else if (id == R.id.nav_nearby){
+
+                NearbyGroceryStoresFragment nearbyGroceryStoresFragment = new NearbyGroceryStoresFragment();
+            FragmentManager fragmentManager =  getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.base_layout_for_fragment , nearbyGroceryStoresFragment, nearbyGroceryStoresFragment.getTag()).commit();
+
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

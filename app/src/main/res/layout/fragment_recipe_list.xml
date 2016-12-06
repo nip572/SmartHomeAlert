@@ -42,38 +42,38 @@
             android:id="@+id/submit_for_ingridients"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            fancy:fb_ghost="true"
+            fancy:fb_ghost="false"
             android:layout_weight="1"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            fancy:fb_borderColor="#7ab800"
+            fancy:fb_borderColor="#36b47f"
             fancy:fb_borderWidth="1dp"
-            fancy:fb_defaultColor="#7ab800"
+            fancy:fb_defaultColor="#36b47f"
             fancy:fb_focusColor="#9bd823"
             fancy:fb_iconPosition="left"
             fancy:fb_radius="30dp"
             fancy:fb_text="Add Item"
-            fancy:fb_textColor="#4ab800" />
+            fancy:fb_textColor="#ffffff" />
 
 
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/button_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            fancy:fb_ghost="true"
+            fancy:fb_ghost="false"
             android:layout_weight="1"
             android:paddingBottom="10dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
 
             android:paddingTop="10dp"
-            fancy:fb_borderColor="#7ab800"
+            fancy:fb_borderColor="#36b47f"
             fancy:fb_borderWidth="1dp"
-            fancy:fb_defaultColor="#7ab800"
+            fancy:fb_defaultColor="#36b47f"
             fancy:fb_focusColor="#9bd823"
             fancy:fb_iconPosition="left"
             fancy:fb_radius="30dp"
             fancy:fb_text="Search"
-            fancy:fb_textColor="#7ab800" />
+            fancy:fb_textColor="#ffffff" />
 
         </LinearLayout>>
     <TextView android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:layout_marginTop="30dp"
         android:textStyle="italic"
         android:textSize="18sp"
-        android:textColor="#7ab800"
+        android:textColor="#36b47f"
         />
     <ListView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
