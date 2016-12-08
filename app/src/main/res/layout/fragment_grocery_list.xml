@@ -27,6 +27,7 @@
 
     <Button android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:id="@+id/fragment_grocery_list_submit_button"
         android:background="#36b47f"
         android:textColor="#ffffff"
         android:layout_gravity="center"

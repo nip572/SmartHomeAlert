@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static android.os.Build.VERSION_CODES.M;
+
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -41,7 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         // Checking for first time launch - before calling setContentView()
         prefManager = new PrefManager(this);
-/*        if (!prefManager.isFirstTimeLaunch()) {
+       /* if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
         }*/
@@ -210,4 +212,13 @@ public class WelcomeActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
+
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        Intent refresh =new Intent(this, WelcomeActivity.class);
+        startActivity(refresh);
+    }*/
+
 }

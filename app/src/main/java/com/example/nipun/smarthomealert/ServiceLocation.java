@@ -21,7 +21,11 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.ListView;
+import java.util.Timer;
+import java.util.TimerTask;
 import android.widget.Toast;
+import static java.util.concurrent.TimeUnit.*;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,6 +37,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.sql.Ref;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +52,7 @@ import static android.R.attr.angle;
 import static android.R.attr.gravity;
 import static android.R.attr.radius;
 import static android.os.Build.RADIO;
+import static com.example.nipun.smarthomealert.BaseActivity.gl;
 import static java.security.AccessController.getContext;
 
 /**
@@ -64,10 +74,18 @@ public class ServiceLocation extends Service {
     private  int notificationId = 0;
     private String pushNotifications = "true";
     private String userId;
+    private String openClose;
     Intent mapIntent1;
     private Double distanceBetweenLocationAndStore = 5.0;
     private SensorManager mSensorManager;
     private ShakeEventListener mSensorListener;
+    private List<GroceryList> gl1 = new ArrayList<>();
+    private FireBaseModel fireBaseModel;
+    private  String resultName;
+    GroceryList groceryItem ;
+    FireBaseModel fbm;
+    Timer timer = new Timer();
+    Boolean openCloseBool;
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
@@ -103,10 +121,6 @@ public class ServiceLocation extends Service {
                 editorLat.putString("currentLong" , currentLong.toString());
                 editorLat.apply();
 
-            ;
-
-
-
                 sendBroadcast(i);
 
             }
@@ -141,7 +155,7 @@ public class ServiceLocation extends Service {
                 try{
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -160,6 +174,7 @@ public class ServiceLocation extends Service {
 
         //PUSH NOTIFICATION ON OR OFF
         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        userId = sharedPreferencesUid.getString("userId" , "");
         DatabaseReference pushNotificationsRef = database1.getInstance().getReference(userId).child("pushNotifications");
         pushNotificationsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -193,7 +208,8 @@ public class ServiceLocation extends Service {
         weightRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                weightValue = dataSnapshot.getValue(Integer.class);
+                weightValue= dataSnapshot.getValue(Integer.class);
+
                 Gson gson = new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                         .create();
@@ -211,7 +227,7 @@ public class ServiceLocation extends Service {
                     public void onResponse(Call<PlaceApiModel> call, Response<PlaceApiModel> response) {
                         int statusCode = response.code();
                         details = response.body();
-                        String resultName = details.getResults().get(1).getName();
+                        resultName = details.getResults().get(0).getName();
                         Log.d(resultName, "onResponse: NAME OF GROCERY STORE IS");
                         Double groceryStoreLat = details.getResults().get(0).getGeometry().getLocation().getLatitude();
                         Double groceryStoreLong = details.getResults().get(0).getGeometry().getLocation().getLongitude();
@@ -225,7 +241,10 @@ public class ServiceLocation extends Service {
                     }
                 });
                 if(pushNotifications.equals("true")){
-                if (weightValue < minimumThrehold) {
+                if (weightValue != 0 && weightValue < minimumThrehold) {
+
+                    //getData
+
                     if(distanceBetweenLocationAndStore < radiusFirebase ){
                         getNotificationDistanceIsLess();
                     }
@@ -258,7 +277,50 @@ public class ServiceLocation extends Service {
             }
         });
 
+
+
+            //OPEN CLOSE REF
+        DatabaseReference openCloseRef = database.getInstance().getReference(userId).child("open");
+        openCloseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                openClose = dataSnapshot.getValue(String.class);
+
+                if(openClose.equals("Open")){
+
+                    int MINUTES = 1; // The delay in minutes
+
+
+                      timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            System.out.println("start");// / Function runs every MINUTES minutes.
+                            getDoorIsOpen();
+
+                        }
+                    }, 0, 1000 * 60 * MINUTES);
+                }
+                else{
+
+                    timer.cancel();
+                    timer = new Timer();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
     }
+
+
+
+   //
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -274,7 +336,7 @@ public class ServiceLocation extends Service {
         Notification n = new Notification.Builder(this)
                 .setContentTitle("Weight Value is Low")
                 .setContentText("Add milk to list")
-                .setSmallIcon(R.drawable.ic_menu_send)
+                .setSmallIcon(R.drawable.app_logo)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
@@ -295,12 +357,12 @@ public class ServiceLocation extends Service {
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
         //PendingIntent intentNavig = PendingIntent.getActivity(this ,(int) System.currentTimeMillis() , mapIntent1 ,0);
         Notification n = new Notification.Builder(this)
-                .setContentTitle("You are near a grocery store")
+                .setContentTitle("You are near " + resultName)
                 .setContentText("Milk is low")
-                .setSmallIcon(R.drawable.ic_menu_camera)
+                .setSmallIcon(R.drawable.app_logo)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
-                .addAction(R.drawable.ic_menu_camera, "Drive", getMapNavigationIntent(mapIntent1 , 'q'))
+                .addAction(R.drawable.ic_menu_send, "Drive", getMapNavigationIntent(mapIntent1 , 'q'))
                 .addAction(R.drawable.ic_menu_send, "Walk", getMapNavigationIntent(mapIntent1 , 'w'))
                 .build();
 
@@ -309,6 +371,31 @@ public class ServiceLocation extends Service {
         notificationManager.notify(0, n);
 
     }
+
+    public void getDoorIsOpen() {
+        Intent intent1 = new Intent(this, ServiceLocation.class);
+
+
+        //startActivity(mapIntent1);
+
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
+        //PendingIntent intentNavig = PendingIntent.getActivity(this ,(int) System.currentTimeMillis() , mapIntent1 ,0);
+        Notification n = new Notification.Builder(this)
+                .setContentTitle("Door is Open")
+                .setContentText("Reminder to close the door")
+                .setSmallIcon(R.drawable.app_logo)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, n);
+
+    }
+
+
+
 
 
 
@@ -352,6 +439,35 @@ public class ServiceLocation extends Service {
                 SensorManager.SENSOR_DELAY_UI);
 
         return START_STICKY;
+    }
+
+
+    public void addAutomatic(String userId){
+        FirebaseDatabase database4 = FirebaseDatabase.getInstance();
+        final DatabaseReference groceryListRef = database4.getInstance().getReference(userId);
+       groceryListRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                fireBaseModel = dataSnapshot.getValue(FireBaseModel.class);
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+        groceryItem = new GroceryList();
+        if(fireBaseModel.getGroceryList() != null){
+        gl1  = fireBaseModel.getGroceryList();}
+        groceryItem.setName("Milk");
+        groceryItem.setImageURL("http://www.maryvancenc.com/wp-content/uploads/2013/05/url2.jpeg");
+
+        gl1.add(groceryItem);
+        fbm = new FireBaseModel();
+        fbm.setGroceryList(gl1);
+        groceryListRef.child("groceryList").setValue(gl1);
     }
 
 }

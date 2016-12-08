@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ToggleButton tbPushNotifictions;
     private ToggleButton tbAutomaticOrder;
     private FancyButton   buttonSave;
+    private EditText etMaximumWeight;
     FireBaseModel fireBaseModel;
     String userId;
 
@@ -54,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
         etMinimumThreshold = (EditText) findViewById(R.id.settings_activity_minimum_threshold_edit_text);
         tbPushNotifictions = (ToggleButton) findViewById(R.id.settings_activity_toggle_push_notifications);
         tbAutomaticOrder = (ToggleButton) findViewById(R.id.settings_activity_toggle_button_automatic_order);
+        etMaximumWeight =(EditText) findViewById(R.id.settings_activity_toggle_button_maxiumum_weight);
         buttonSave = (FancyButton) findViewById( R.id.settings_activity_save_button);
         etAddress = (EditText) findViewById(R.id.settings_activity_address_edit_text);
 
@@ -100,8 +103,14 @@ public class SettingsActivity extends AppCompatActivity {
 
             fireBaseModel.setRadius(Integer.parseInt(etRadius.getText().toString()));
                 fireBaseModel.setMinimumThreshold(Integer.parseInt(etMinimumThreshold.getText().toString()));
+                fireBaseModel.setMaximumWeight(Integer.parseInt(etMaximumWeight.getText().toString()));
+                fireBaseModel.setAddress((etAddress.getText().toString()));
                 //fireBaseModel.setMinimumThreshold(Integer.parseInt(etMinimumThreshold.getText().toString()));
             myRef.setValue(fireBaseModel);
+
+
+                Toast.makeText(SettingsActivity.this, "Settings Saved",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -115,6 +124,9 @@ public class SettingsActivity extends AppCompatActivity {
                 Log.d(fireBaseModel.getAddress(), "onDataChange: CHECKING VALUE");
                 etRadius.setText(fireBaseModel.getRadius().toString());
                 etMinimumThreshold.setText(fireBaseModel.getMinimumThreshold().toString());
+                etAddress.setText(fireBaseModel.getAddress().toString());
+                etMaximumWeight.setText(fireBaseModel.getMaximumWeight().toString());
+
 
                 if(fireBaseModel.getPushNotifications().equals("false"))
                 {

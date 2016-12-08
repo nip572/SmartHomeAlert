@@ -1,7 +1,7 @@
 {
   "project_info": {
     "project_number": "976403315747",
-    "firebase_url": "https://smarthomealert-60878.firebaseio.com",
+    "firebase_url": "REDACTED",
     "project_id": "smarthomealert-60878",
     "storage_bucket": "smarthomealert-60878.appspot.com"
   },
@@ -29,7 +29,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyALHfOzVz5_fJ9wIFWkrCnvUhf9K3KhkMo"
+          "current_key": "***Redacted***"
         }
       ],
       "services": {

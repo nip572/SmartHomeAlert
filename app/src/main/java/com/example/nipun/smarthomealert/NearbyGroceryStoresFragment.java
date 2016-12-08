@@ -55,7 +55,6 @@ public class NearbyGroceryStoresFragment extends Fragment {
         SharedPreferences sharedPreferencesLat = getContext().getSharedPreferences("Lat", Context.MODE_PRIVATE);
         currentLat = sharedPreferencesLat.getString("currentLat" , "");
         currentLong = sharedPreferencesLat.getString("currentLong" , "");
-        Log.d(currentLat + currentLong, "onCreateView: Nearby GroceryList");
 
 
         //MAKE REST CALL
@@ -78,7 +77,7 @@ public class NearbyGroceryStoresFragment extends Fragment {
                 int statusCode = response.code();
                 placeApiModel = response.body();
                 result = placeApiModel.getResults();
-                Log.d(result+"", "onResponse: Title");
+                Log.d(result.get(0).getGeometry().getLocation().getLatitude()+"", "onResponse: Title");
 
 
                 lvNearby = (ListView) rootView.findViewById(R.id.list_view_nearby_fragment);

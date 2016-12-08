@@ -229,11 +229,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:width="10dp"
+            android:id="@+id/settings_activity_toggle_button_maxiumum_weight"
             android:gravity="center"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:textColor="#ff0000"
+            android:textColor="@android:color/darker_gray"
             android:background="@null"
-            android:text="On"
+            android:text=""
             android:layout_weight="1" />
     </LinearLayout>
 

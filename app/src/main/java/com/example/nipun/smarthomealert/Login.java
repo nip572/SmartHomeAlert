@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -53,9 +55,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import mehdi.sakout.fancybuttons.FancyButton;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
@@ -67,6 +74,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private  FirebaseAuth.AuthStateListener mAuthListener;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private TextView tvForgotPassword;
+    private FirebaseUser user;
     String userUid;
     FireBaseModel fireBaseModel1 = new FireBaseModel();
     String emailId;
@@ -100,7 +109,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user= firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //USER SIGNED IN
                     //Start Main App
@@ -135,7 +144,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     fb.setRadius(1);
                                     fb.setTemperatureValue(14);
                                     fb.setDaysToOrder(2);
-                                    fb.setWeightValue(250);
+                                    fb.setWeightValue(0);
                                     fb.setMaximumWeight(1000);
                                     myRef.setValue(fb);
                                 }
@@ -149,7 +158,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             }
                         });
 
-
+                    Toast.makeText(Login.this, "Signing In",
+                            Toast.LENGTH_LONG).show();
 
                     try {
                         Thread.sleep(5000);
@@ -163,7 +173,17 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
+
+
+                tvForgotPassword = (TextView) findViewById(R.id.forgot_password);
+                tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        createDialog();
+
+                    }
+                });
             }
         };
 
@@ -283,8 +303,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(Login.this, "Auth failed",
+                            Toast.makeText(Login.this, "User Already Added",
                                     Toast.LENGTH_SHORT).show();
+                        }
+                        else if (task.isSuccessful()){
+
+                            Toast.makeText(Login.this, "Account Created",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -319,6 +344,47 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     }
                 });
         // [END sign_in_with_email]
+    }
+
+
+    private void sendPasswordResetEmail(String emailId){
+        mAuth.sendPasswordResetEmail(emailId).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Email sent.");
+                    Toast.makeText(Login.this, "Reset Email sent",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void createDialog(){
+
+
+        AlertDialog.Builder alertDialog =  new AlertDialog.Builder(this);
+        alertDialog.setMessage("Are you sure you want to reset your password");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Yes" , new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendPasswordResetEmail(mEmailField.getText().toString());
+
+            }
+        });
+
+
+        alertDialog.setNegativeButton("No" , new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialog.create().show();
+
     }
 
 

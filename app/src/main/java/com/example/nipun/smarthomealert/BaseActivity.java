@@ -232,6 +232,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         Toast toast = Toast.makeText(context, "Signing Out", Toast.LENGTH_SHORT);
         toast.show();
         BaseActivity.this.startActivity(startLogin);
+        SharedPreferences sharedPreferencesUid = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        sharedPreferencesUid.edit().remove("userId").commit();
+        Intent i =new Intent(getApplicationContext(),ServiceLocation.class);
+        stopService(i);
         Toast tost2 = Toast.makeText(context,"Signed Out Successfully" , Toast.LENGTH_SHORT );
         tost2.show();
     }

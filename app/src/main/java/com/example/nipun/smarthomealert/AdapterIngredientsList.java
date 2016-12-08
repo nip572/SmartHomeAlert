@@ -80,9 +80,6 @@ public class AdapterIngredientsList extends BaseAdapter {
         userId= sharedPreferencesUid.getString("userId" , "");
 
 
-
-
-
         //Log.d("TEST", "getView: TEST");
         v = View.inflate(mContext, R.layout.list_view_ingredients_row, null);
         tvIngredient = (TextView) v.findViewById(R.id.list_view_ingredients_text);
@@ -148,6 +145,9 @@ public class AdapterIngredientsList extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     //ENABLED
+                    Toast.makeText(mContext.getApplicationContext(), "Added",
+                            Toast.LENGTH_SHORT).show();
+
                     Log.d(TAG, "onCheckedChanged: I AM BEING CALLED");
                     tbAddtoGroceryList.setTextColor(Color.parseColor("#008000"));
                     GroceryList groceryItem = new GroceryList();
@@ -173,6 +173,10 @@ public class AdapterIngredientsList extends BaseAdapter {
 
                  else {
                     //DISABLED
+
+                    Toast.makeText(mContext.getApplicationContext(), "Removed",
+                            Toast.LENGTH_SHORT).show();
+
                     tbAddtoGroceryList.setTextColor(Color.parseColor("#ff0000"));
                     Integer num = 0;
                     String nameOfIngredient = extendedIngredients.get(position).getName();
